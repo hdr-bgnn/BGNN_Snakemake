@@ -1,0 +1,20 @@
+
+# data file #
+#############
+Metadata/*.json
+Images/*.jpg
+Cropped/*.jpg
+Segmented/*.png
+Containers/*
+
+# Snakemake log file #
+######################
+
+.snakemake/**
+
+.config/**
+
+# Model file #
+
+.cache/**
+Scripts/saved_models/Trained_model_SM.pth
