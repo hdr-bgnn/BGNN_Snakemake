@@ -9,15 +9,18 @@ Snakemake use a syntax based on python and use python code in the defintiion of 
 
 ## Different part of the workflow
 
-Snakemake package: installed and managed conda or mamba (similar that conda but more optimize for snakemake
+1. Snakemake package: installed and managed conda or mamba (similar that conda but more optimize for snakemake
 
-Snakefile
+2. Snakefile
 
-Script
+3. Scripts for
+   - Generating metadata (in particular bounding box, bbox)
+   - cropping the fish using bbox and generating cropped image
+   - traits segmentation
+ 
+4. Containers
 
-Container
-
-Data
+5. Data
 
 # 2- Setup requirements
 
@@ -25,4 +28,13 @@ Data
 
 # 4- Usage
 
+# 5- Containers location
+
+The containers related to this project are located at https://cloud.sylabs.io/library/thibaulttabarin
+
+there are 3 containers of interest:
+
+* BGNN/segment_trait
+* BGNN/Metadata_generator
+* BGNN/crop_image
 
