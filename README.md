@@ -24,9 +24,17 @@ Snakemake use a syntax based on python and use python code in the defintiion of 
 
 # 2- Setup requirements
 
-# 3- Download model
+   - To start with OSC system check instruction in Setup_Snakemake_OSC.txt
+
+# 3- Download models
 
 # 4- Usage
+   
+   For explaination check instruction in Instruction_Snakemake.txt
+   
+   ```
+   snakemake --cores 1 --use-singularity --config list=List/list_lepomis_INHS.csv
+   ```
 
 # 5- Containers location
 
@@ -34,7 +42,10 @@ The containers related to this project are located at https://cloud.sylabs.io/li
 
 there are 3 containers of interest:
 
-* BGNN/segment_trait
-* BGNN/Metadata_generator
-* BGNN/crop_image
+* BGNN/segment_trait : 
+   ```singularity pull --arch amd64 library://thibaulttabarin/bgnn/segment_trait:1```
+* BGNN/Metadata_generator :
+   ```singularity pull --arch amd64 library://thibaulttabarin/bgnn/metadata_generator:v2 ```
+* BGNN/crop_image :
+    ```singularity pull --arch amd64 library://thibaulttabarin/bgnn/crop_image:v1```
 
