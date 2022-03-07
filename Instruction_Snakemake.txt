@@ -1,0 +1,23 @@
+##########################################
+Snakemake Usage
+##########################################
+
+1- Activate conda an environment containing snakemake. To create environment following instruction here :
+
+    ## Use conda
+    https://snakemake.readthedocs.io/en/stable/getting_started/installation.html
+
+1- Get a list of fish to analyze 
+    
+    + This should be a sublist of the Tulane metadata -> https://bgnn.tulane.edu/hdrweb/hdr/imagemetadata/ 
+    + There is demo list in the main folder : List/list_lepomis_INHS.csv
+
+
+2- cd in the main folder
+    cd BGNN_Snakemake
+
+3- Execute snakemake file
+
+    The following instruction will automatically call snakefile using snakemake, use <1> cores and use the <list_lepomis_INHS.csv>
+    
+    snakemake --cores 1 --use-singularity --config list=List/list_lepomis_INHS.csv

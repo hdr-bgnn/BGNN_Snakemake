@@ -1,0 +1,42 @@
+### Setup Snakemake envirionment on OSC and get git clone a project
+## Connect with OCS
+ssh myname@pitzer.osc.edu
+
+## Use conda
+https://www.osc.edu/resources/getting_started/howto/howto_add_python_packages_using_the_conda_package_manager
+# snakemake 
+https://snakemake.readthedocs.io/en/stable/getting_started/installation.html
+
+
+module load miniconda3
+conda config --show channels
+conda config --add channels conda-forge bioconda
+
+
+conda create -n local
+
+conda install -n local -c conda-forge mamba
+
+conda init bash # to add conda activate to bash
+
+conda activate local
+
+conda install -n local -c conda-forge mamba
+mamba create -c conda-forge -c bioconda -n snakemake snakemake
+
+## import a project using github
+# Setting up Github (using ssh connect end key)
+
+cd ~/.ssh
+ssh-keygen -t ed25519 -C "myemail@gmail.com"
+# keep the name ed25519
+# enter a paraphrase like "ILOVE2022github" and store it
+cat id_ed25519.pub
+# Copy paste the full key ssh-ed25519 AAAAC3NzaC1lZDg6xDK5fQO30BfP+8E8j49z3cI1NTE5AAAAICyq6uzTr1+ScLT/js1B myemail@gmail.com
+# put the public key (id_ed25519.pub) onto your github account, follow this instruction :
+https://docs.github.com/en/enterprise-server@3.0/authentication/connecting-to-github-with-ssh/adding-a-new-ssh-key-to-your-github-account
+
+# clone project
+git clone git@github.com:hdr-bgnn/workflow_snakemake.git
+ 
+
