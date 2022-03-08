@@ -5,7 +5,7 @@ Metadata/*.json
 Images/*.jpg
 Cropped/*.jpg
 Segmented/*.png
-Containers/*
+
 
 # Snakemake log file #
 ######################
@@ -14,7 +14,11 @@ Containers/*
 
 .config/**
 
-# Model file #
+# Model and python file #
 
 .cache/**
-Scripts/saved_models/Trained_model_SM.pth
+
+*.pyc
+*.pth
+# Container image
+*.sif

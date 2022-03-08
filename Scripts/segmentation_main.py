@@ -1,5 +1,4 @@
-#!/bin/local/python
-
+#!/home/user/miniconda/bin/python
 import os
 import sys
 import numpy as np

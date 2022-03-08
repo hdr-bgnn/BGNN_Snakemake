@@ -21,3 +21,7 @@ Snakemake Usage
     The following instruction will automatically call snakefile using snakemake, use <1> cores and use the <list_lepomis_INHS.csv>
     
     snakemake --cores 1 --use-singularity --config list=List/list_lepomis_INHS.csv
+    
+    
+sinteractive  -N 1 -n 4  -t 00:10:00  -A PAS2136 -J test -p debug squeue -u thibaulttabarin
+snakemake --cores 4 --use-singularity --config list=List/list_lepomis_INHS.csv

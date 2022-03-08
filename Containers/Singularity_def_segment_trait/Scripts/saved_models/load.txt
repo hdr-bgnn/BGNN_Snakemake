@@ -1,4 +1,4 @@
-If the to downlaod manually the model weight execute the folliwing command
+If you need to downlaod manually the model weight execute the folliwing command
 
 cd ~/BGNN_Snakemake/Containers/Singularity_def_segment_trait/Scripts
 gdown -O saved_models/ https://drive.google.com/uc?id=1HBSGXbWw5Vorj82buF-gCi6S2DpF4mFL

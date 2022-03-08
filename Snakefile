@@ -54,6 +54,6 @@ rule Segmentation:
     input: 'Cropped/{image}_cropped.jpg'
     output: 'Segmented/{image}_segmented.png'
     singularity:
-        'docker://thibault79t/smp_env:v1'
+        'library://thibaulttabarin/bgnn/segment_trait:1'
     shell:
-        'python Scripts/segmentation_main.py {input} {output}'
+        'segmentation_main.py {input} {output}'

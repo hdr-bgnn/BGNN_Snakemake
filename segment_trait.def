@@ -1,0 +1,15 @@
+BootStrap: docker
+From: thibault79t/smp_env:v1
+
+%setup
+  mkdir -p ${SINGULARITY_ROOTFS}/pipeline
+
+%post
+  chmod +x /pipeline/Scripts/segmentation_main.py
+  echo 'export PATH=$PATH:/pipeline/Scripts' >> $SINGULARITY_ENVIRONMENT
+
+%files
+  Scripts/ /pipeline/
+
+%labels
+MAINTAINER tabarin@battelleecology.org
