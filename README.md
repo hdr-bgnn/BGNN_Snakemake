@@ -60,7 +60,7 @@ there are 3 containers of interest:
 * BGNN/crop_image :
     ```singularity pull --arch amd64 library://thibaulttabarin/bgnn/crop_image:v1```
 
-# 6- Quick with OSC
+# 6- Quick start with OSC
    
    Requirement have an acount at OSC. If you need one, contact Hilmar Lapp (Hilmar.Lapp@duke.edu) or Steve Chang (chang.136@osu.edu).
    
