@@ -28,6 +28,17 @@ Snakemake use a syntax based on python and use python code in the defintiion of 
 
 # 3- Download models
 
+   *Models for segment trait* : located at https://drive.google.com/uc?id=1HBSGXbWw5Vorj82buF-gCi6S2DpF4mFL
+   Follow instruction in BGNN_Snakemake/Containers/Singularity_def_segment_trait/Scripts/saved_models/load.txt
+   or
+   ```
+   cd ~/BGNN_Snakemake/Containers/Singularity_def_segment_trait/Scripts
+   gdown -O saved_models/ https://drive.google.com/uc?id=1HBSGXbWw5Vorj82buF-gCi6S2DpF4mFL
+   ```
+   
+   *Models for generate metadata* : https://drive.google.com/file/d/1QWzmHdF1L_3hbjM85nOjfdHsm-iqQptG
+   
+
 # 4- Usage
    
    For explaination check instruction in Instruction_Snakemake.txt
