@@ -61,7 +61,10 @@ there are 3 containers of interest:
     ```singularity pull --arch amd64 library://thibaulttabarin/bgnn/crop_image:v1```
 
 # 6- Quick start with OSC
-   
+
+## 1- Using interactive (command sinteractive)
+
+   This is the best to start.  
    Requirement have an acount at OSC. If you need one, contact Hilmar Lapp (Hilmar.Lapp@duke.edu) or Steve Chang (chang.136@osu.edu).
    
    1- ssh <username>@pitzer.osc.edu # you are now on login node... Be gentle with them, they don't like to work too hard!
@@ -94,3 +97,39 @@ there are 3 containers of interest:
    
    15- ls ~/BGNN_Snakemake # you shloud see folders Images/ Metadata/ Cropped/ Segmented/ populated with multiple fish_file on some sort.
 
+## 2- sbatch and slurm (work in progress)
+   
+   To submit a job to OSC I use the script SLURM_snake
+   
+   Usage, connect to the login node
+   
+   ```ssh <username>@pitzer```
+   
+   Then
+   
+   ```
+   cd BGNN_Snakemake
+   sbatch SLURM_Snake
+   ```
+   
+   To check the process
+   
+   ```squeue -u $USER```
+   
+   That's it!
+   
+   *Comment*: this script will create :
+   * slurm-job_ID.out (, and directory job_ID)
+   * directory job_ID which contain the results in the form of:
+      - Images/
+      - Cropped/
+      - Metadata/
+      - Segmented/
+      - Snakemake/
+      - list_test.csv
+   
+   Problem to solve : 
+   * every job create a new folder
+   * snakemake will lose tract of what has been processed. Need to figure out to a better manage the link between input data output and track.
+   * I had to manullay for .snakemake (~/BGNN_Snakemake/.snakemake/singularity/) containing the singularity image in to the $TMPDIR
+   * Same for ~/BGNN_Snakemake/.cache/torch/hub/checkpoints/se_resnext50_32x4d-a260b3a4.pth
