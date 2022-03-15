@@ -20,9 +20,7 @@ conda install -n local -c conda-forge mamba
 conda init bash # to add conda activate to bash
 
 conda activate local
-
-conda install -n local -c conda-forge mamba
-mamba create -c conda-forge -c bioconda -n snakemake snakemake
+conda install -c bioconda -c conda-forge snakemake
 
 ## import a project using github
 # Setting up Github (using ssh connect end key)

@@ -1,0 +1,28 @@
+#!/bin/bash
+#SBATCH --account=PAS2136
+#SBATCH --job-name=segment_test
+#SBATCH --time=00:10:00
+#SBATCH --ntasks=4
+
+module load miniconda3
+conda init
+source ~/.bashrc
+
+conda activate local
+conda install -c bioconda -c conda-forge snakemake
+
+cp $SLURM_SUBMIT_DIR/list_test.csv $TMPDIR
+cp -R $SLURM_SUBMIT_DIR/Images $TMPDIR
+cp $SLURM_SUBMIT_DIR/Snakefile $TMPDIR
+cp -R $SLURM_SUBMIT_DIR/.snakemake $TMPDIR
+cp -R $SLURM_SUBMIT_DIR/.cache $TMPDIR
+
+cd $TMPDIR
+
+snakemake --cores 4 --use-singularity --config list=list_test.csv
+
+cd $SLURM_SUBMIT_DIR
+mkdir $SLURM_JOB_ID
+cp -R $TMPDIR/* $SLURM_JOB_ID
+
+
