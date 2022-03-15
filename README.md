@@ -22,7 +22,7 @@ Snakemake use a syntax based on python and use python code in the defintiion of 
 
 5. Data
 
-# 2- Setup requirements
+# 2- Setup and Requirements
 
    - To start with OSC system check instruction in Setup_Snakemake_OSC.txt
 
