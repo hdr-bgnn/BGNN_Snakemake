@@ -6,6 +6,15 @@ First complete version of the workflow with snakemake
 The workflow is managed using snakemake. 
 
 Snakemake use a syntax based on python and use python code in the defintiion of the workflow. Snakemake is very friendly python user workflow manage.
+The Workflow is breakdown in 4 different steps:
+1. Download the image : simple bash script
+2. Get metadata : code develop by Drexel (Joel, Kevin and Jane) https://github.com/hdr-bgnn/drexel_metadata/tree/kevin
+3. Crop the image using bounding box from metadata : code by Thibault.
+4. Segment traits : Code developped by Maruf and reorganize by Thibault https://github.com/hdr-bgnn/BGNN-trait-segmentation/tree/segment_mini
+
+Those 4 steps are represneted in the following workflow diagram
+
+![Workflow overview](https://github.com/hdr-bgnn/BGNN_Snakemake/blob/main/Snakemake_workflow.png)
 
 ## Different part of the workflow
 
@@ -19,15 +28,22 @@ Snakemake use a syntax based on python and use python code in the defintiion of 
    - traits segmentation
  
 4. Containers
+   - there are available at https://cloud.sylabs.io/library/thibaulttabarin
 
 5. Data
+   - Images/ : store the ouput from the Download step. Images downloaded from Tulane server
+   - Metadata/ : store the output from generate_metadata.py code developped by Drexel. One file ".json" per image
+   - Cropped/ : store the ouput from Crop image. 
+   - Segmented/ : store the ouput from Segment traits. code developped by Maruf
 
 # 2- Setup and Requirements
 
-   - To start with OSC system check instruction in Setup_Snakemake_OSC.txt
+   - To start with OSC system check instruction in Setup_Snakemake_OSC.txt.
+   - Todo opy paste the contain of Setup_Snakemake_OSC.txt here and format it nicely... Probably a lot of typo to fix
 
 # 3- Download models
 
+   Not sure if this is relevant here... Keep it for the moment. This should go with the documentation for indivdual code on ecah correponding repository
    *Models for segment trait* : located at https://drive.google.com/uc?id=1HBSGXbWw5Vorj82buF-gCi6S2DpF4mFL
    Follow instruction in BGNN_Snakemake/Containers/Singularity_def_segment_trait/Scripts/saved_models/load.txt
    or
@@ -81,7 +97,7 @@ there are 3 containers of interest:
    
    7- conda activate local
    
-   8- pip install snakemake
+   8- conda install -c bioconda -c conda-forge snakemake
    
    9- sinteractive  -N 1 -n 4  -t 00:10:00  -A <PROJECT_NAME> -J test -p debug squeue -u $USER # your now on a computing node.
    
