@@ -5,20 +5,20 @@ First complete version of the workflow with snakemake
 
 The workflow is managed using snakemake. 
 
-Snakemake use a syntax based on python and use python code in the defintiion of the workflow. Snakemake is very friendly python user workflow manage.
+Snakemake uses a syntax based on python and can use python code in the defintiion of the workflow. Snakemake is a very friendly python user workflow manager.
 The Workflow is breakdown in 4 different steps:
 1. Download the image : simple bash script
-2. Get metadata : code develop by Drexel (Joel, Kevin and Jane) https://github.com/hdr-bgnn/drexel_metadata/tree/kevin
-3. Crop the image using bounding box from metadata : code by Thibault.
-4. Segment traits : Code developped by Maruf and reorganize by Thibault https://github.com/hdr-bgnn/BGNN-trait-segmentation/tree/segment_mini
+2. Get metadata (container): code develop by Drexel (Joel, Kevin and Jane) https://github.com/hdr-bgnn/drexel_metadata/tree/kevin
+3. Crop the image using bounding box from metadata (container): code by Thibault.
+4. Segment traits (container): Code developped by Maruf and reorganize by Thibault https://github.com/hdr-bgnn/BGNN-trait-segmentation/tree/segment_mini
 
-Those 4 steps are represneted in the following workflow diagram
+Those 4 steps are represented in the following workflow diagram
 
 ![Workflow overview](https://github.com/hdr-bgnn/BGNN_Snakemake/blob/main/Snakemake_workflow.png)
 
-## Different part of the workflow
+## Different elements of the workflow
 
-1. Snakemake package: installed and managed conda or mamba (similar that conda but more optimize for snakemake
+1. Snakemake package: installed and managed by conda or mamba (similar that conda but more optimize for snakemake), to access snakemake don't forget to bioconda channel or mamba conda channel.
 
 2. Snakefile
 
@@ -26,6 +26,8 @@ Those 4 steps are represneted in the following workflow diagram
    - Generating metadata (in particular bounding box, bbox)
    - cropping the fish using bbox and generating cropped image
    - traits segmentation
+ 
+I believe the scripts should live on their respective repository. This part is still a bit comfusing... Need to work on that.
  
 4. Containers
    - there are available at https://cloud.sylabs.io/library/thibaulttabarin
