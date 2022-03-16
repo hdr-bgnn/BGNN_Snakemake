@@ -1,18 +1,17 @@
 # BGNN_Snakemake
-First complete version of the workflow with snakemake
+First complete version of the BGNN image segmentation workflow managed using snakemake.
 
 # 1- Introduction
 
-The workflow is managed using snakemake. 
+The image segmentation workflow is managed using snakemake, a user-friendly python workflow manager. Snakemake uses a syntax based on python and can use python code in the definition of the workflow. 
 
-Snakemake uses a syntax based on python and can use python code in the defintiion of the workflow. Snakemake is a very friendly python user workflow manager.
-The Workflow is breakdown in 4 different steps:
-1. Download the image : simple bash script
-2. Get metadata (container): code develop by Drexel (Joel, Kevin and Jane) https://github.com/hdr-bgnn/drexel_metadata/tree/kevin
-3. Crop the image using bounding box from metadata (container): code by Thibault.
-4. Segment traits (container): Code developped by Maruf and reorganize by Thibault https://github.com/hdr-bgnn/BGNN-trait-segmentation/tree/segment_mini
+The segmentation workflow consists of the following steps:
+1. Download the image(s) using a simple bash script
+2. Get metadata (container) using code develop by Drexel (Joel, Kevin and Jane) https://github.com/hdr-bgnn/drexel_metadata/tree/kevin
+3. Crop the image using bounding box from metadata (container) using code developed by Thibault.
+4. Segment traits (container) using code developed by Maruf and reorganize by Thibault https://github.com/hdr-bgnn/BGNN-trait-segmentation/tree/segment_mini
 
-Those 4 steps are represented in the following workflow diagram
+These 4 steps are represented in the following workflow diagram
 
 ![Workflow overview](https://github.com/hdr-bgnn/BGNN_Snakemake/blob/main/Snakemake_workflow.png)
 
