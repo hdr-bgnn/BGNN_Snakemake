@@ -15,9 +15,9 @@ These 4 steps are represented in the following workflow diagram
 
 ![Workflow overview](https://github.com/hdr-bgnn/BGNN_Snakemake/blob/main/Snakemake_workflow.png)
 
-## Different elements of the workflow
+## Workflow components
 
-1. Snakemake package: installed and managed by conda or mamba (similar that conda but more optimize for snakemake), to access snakemake don't forget to bioconda channel or mamba conda channel.
+1. Snakemake package: installed and managed by conda or mamba, which is similar to conda but optimized for snakemake. To access snakemake, use the bioconda channel or mamba conda channel.
 
 2. Snakefile
 
@@ -29,17 +29,17 @@ These 4 steps are represented in the following workflow diagram
 I believe the scripts should live on their respective repository. This part is still a bit comfusing... Need to work on that.
  
 4. Containers
-   - there are available at https://cloud.sylabs.io/library/thibaulttabarin
+   - these are available at https://cloud.sylabs.io/library/thibaulttabarin
 
 5. Data
    - Images/ : store the ouput from the Download step. Images downloaded from Tulane server
-   - Metadata/ : store the output from generate_metadata.py code developped by Drexel. One file ".json" per image
+   - Metadata/ : store the output from generate_metadata.py code developed by Drexel team. One file ".json" per image
    - Cropped/ : store the ouput from Crop image. 
-   - Segmented/ : store the ouput from Segment traits. code developped by Maruf
+   - Segmented/ : store the ouput from Segment trait using code developed by M. Maruf (Virginia Tech)
 
 # 2- Setup and Requirements
 
-   - To start with OSC system check instruction in Setup_Snakemake_OSC.txt.
+   - To start with OSC system check instructions in Setup_Snakemake_OSC.txt.
    - Todo opy paste the contain of Setup_Snakemake_OSC.txt here and format it nicely... Probably a lot of typo to fix
 
 # 3- Download models
@@ -58,7 +58,7 @@ I believe the scripts should live on their respective repository. This part is s
 
 # 4- Usage
    
-   For explaination check instruction in Instruction_Snakemake.txt
+   For explanation check instruction in Instruction_Snakemake.txt
    
    ```
    snakemake --cores 1 --use-singularity --config list=List/list_lepomis_INHS.csv
