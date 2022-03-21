@@ -90,7 +90,7 @@ there are 3 containers of interest:
    
    3- module load miniconda3 # only the first.
    
-   4- conda create -n local -c bioconda -c conda-forge snakemake -y # Create an environment named snakemake 
+   4- conda create -n snakemake -c bioconda -c conda-forge snakemake -y # Create an environment named snakemake 
    
    5- source activate snakemake # Activate the environment, so now you have access to the package snakemake
    
