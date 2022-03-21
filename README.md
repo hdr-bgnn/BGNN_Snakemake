@@ -100,7 +100,7 @@ there are 3 containers of interest:
    
    10- module load miniconda3 # Again! yes it is a different node (understand different machine).
    
-   11- source activate local # Again! Same as before
+   11- source activate snakemake # Again! Same as before
 
    12- snakemake --cores 4 --use-singularity --config list=List/list_lepomis_INHS.csv # the first time, it may take sometime to download the container and some models.
    
