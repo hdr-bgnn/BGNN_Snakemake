@@ -81,8 +81,8 @@ there are 3 containers of interest:
 
 ## 1- Using interactive (command sinteractive)
 
-   This is the best to start.  
-   Requirement have an acount at OSC. If you need one, contact Hilmar Lapp (Hilmar.Lapp@duke.edu) or Steve Chang (chang.136@osu.edu).
+   This is the best way to start.  
+   Requirement: have an acount at OSC. If you need one, contact Hilmar Lapp (Hilmar.Lapp@duke.edu) or Steve Chang (chang.136@osu.edu).
    
    1- ssh <username>@pitzer.osc.edu # you are now on login node... Be gentle with them, they don't like to work too hard!
    
@@ -130,7 +130,7 @@ there are 3 containers of interest:
    That's it!
    
    *Comment*: this script will create :
-   * slurm-job_ID.out (, and directory job_ID)
+   * slurm-job_ID.out (and a directory job_ID)
    * directory job_ID which contain the results in the form of:
       - Images/
       - Cropped/
