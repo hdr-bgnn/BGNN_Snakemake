@@ -90,29 +90,23 @@ there are 3 containers of interest:
    
    3- module load miniconda3 # only the first.
    
-   4- conda init | source ~/.bashrc # only the first time but if you go on a computing node or owens you do it again and reactivate bashrc.
+   4- conda create -n local -c bioconda -c conda-forge snakemake -y # Create an environment named snakemake 
    
-   5- conda create -n local
+   5- source activate snakemake # Activate the environment, so now you have access to the package snakemake
    
-   6- conda info -e # you should see environment named "local" if not check [here](https://www.osc.edu/resources/getting_started/howto/howto_add_python_packages_using_the_conda_package_manager) for more info
-   
-   7- conda activate local
-   
-   8- conda install -c bioconda -c conda-forge snakemake
+   6- conda info -e # you should see environment named "snakmake" if not check [here](https://www.osc.edu/resources/getting_started/howto/howto_add_python_packages_using_the_conda_package_manager) for more info
    
    9- sinteractive  -N 1 -n 4  -t 00:10:00  -A <PROJECT_NAME> -J test -p debug squeue -u $USER # your now on a computing node.
    
-   10- module load miniconda # Agian! yes it is a different node (understand different machine).
+   10- module load miniconda # Again! yes it is a different node (understand different machine).
    
-   11- conda init | source ~/.bashrc # Again! Same
-   
-   12- conda activate local # Again! By now, you should know, ;)
+   11- source activate local # Again! Same as before
 
-   13- snakemake --cores 4 --use-singularity --config list=List/list_lepomis_INHS.csv # the first time, it may take sometime to download the container and some models.
+   12- snakemake --cores 4 --use-singularity --config list=List/list_lepomis_INHS.csv # the first time, it may take sometime to download the container and some models.
    
-   14- exit # exit the computing node
+   13- exit # exit the computing node
    
-   15- ls ~/BGNN_Snakemake # you shloud see folders Images/ Metadata/ Cropped/ Segmented/ populated with multiple fish_file on some sort.
+   14- ls ~/BGNN_Snakemake # you shloud see folders Images/ Metadata/ Cropped/ Segmented/ populated with multiple fish_file on some sort.
 
 ## 2- sbatch and slurm (work in progress)
    
