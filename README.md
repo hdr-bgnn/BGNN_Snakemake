@@ -98,7 +98,7 @@ there are 3 containers of interest:
    
    9- sinteractive  -N 1 -n 4  -t 00:10:00  -A <PROJECT_NAME> -J test -p debug squeue -u $USER # your now on a computing node.
    
-   10- module load miniconda # Again! yes it is a different node (understand different machine).
+   10- module load miniconda3 # Again! yes it is a different node (understand different machine).
    
    11- source activate local # Again! Same as before
 
