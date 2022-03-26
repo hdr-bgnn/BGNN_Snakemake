@@ -102,7 +102,7 @@ there are 3 containers of interest:
    
    11- source activate snakemake # Again! Same as before
 
-   12- snakemake --cores 4 --use-singularity --config list=List/list_lepomis_INHS.csv # the first time, it may take sometime to download the container and some models.
+   12- snakemake --cores 4 --use-singularity --config --directory=data list=List/list_lepomis_INHS.csv # the first time, it may take sometime to download the container and some models.
    
    13- exit # exit the computing node
    
