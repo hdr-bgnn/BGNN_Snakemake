@@ -110,17 +110,39 @@ there are 3 containers of interest:
 
 ## 2- sbatch and slurm (work in progress)
    
-   To submit a job to OSC I use the script SLURM_snake
+   To submit a job to OSC I use the script [SLURM_Snake](SLURM_Snake).
+   
+   This script requires passing in:
+   - a data directory to hold all data for a single run
+   - a CSV file that contains details about the image files to process
    
    Usage, connect to the login node
    
    ```ssh <username>@pitzer```
    
-   Then
+   Clone this BGNN_Snakemake repo (if necessary) and cd into the repo.
+   ```
+   git clone git@github.com:hdr-bgnn/BGNN_Snakemake.git
+   cd BGNN_Snakemake
+   ```
+   
+   The SLURM_snake script requires a `snakemake` conda environment. 
+   If you have followed the __Using interactive__ instructions this environment will already exist.
+   If not run the following to load minconda, create the environment, and unload miniconda.
+   ```
+   module load miniconda3/4.10.3-py37
+   conda create -n snakemake -c bioconda -c conda-forge snakemake -y
+   module purge
+   ```
+   
+   The `SLURM_Snake` script should be run with arguments like so:
+   ```
+   sbatch SLURM_Snake <data_directory> <path_to_csv>
+   ```
+   For example if you want to store the data files at the relative path of `data/list_test` and processs `List/list_test.csv` run the following:
    
    ```
-   cd BGNN_Snakemake
-   sbatch SLURM_Snake
+   sbatch SLURM_Snake data/list_test List/list_test.csv
    ```
    
    To check the process
@@ -129,18 +151,12 @@ there are 3 containers of interest:
    
    That's it!
    
-   *Comment*: this script will create :
-   * slurm-job_ID.out (and a directory job_ID)
-   * directory job_ID which contain the results in the form of:
-      - Images/
-      - Cropped/
-      - Metadata/
-      - Segmented/
-      - Snakemake/
-      - list_test.csv
+   *Comment*: this script will create a slurm-job_ID.out log file.
    
-   Problem to solve : 
-   * every job create a new folder
-   * snakemake will lose tract of what has been processed. Need to figure out to a better manage the link between input data output and track.
-   * I had to manullay for .snakemake (~/BGNN_Snakemake/.snakemake/singularity/) containing the singularity image in to the $TMPDIR
-   * Same for ~/BGNN_Snakemake/.cache/torch/hub/checkpoints/se_resnext50_32x4d-a260b3a4.pth
+   The `data_directory` will contain the following directory structure:
+   ```
+   Images/
+   Cropped/
+   Metadata/
+   Segmented/
+   ```
