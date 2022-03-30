@@ -128,7 +128,7 @@ there are 3 containers of interest:
    
    The SLURM_snake script requires a `snakemake` conda environment. 
    If you have followed the __Using interactive__ instructions this environment will already exist.
-   If not run the following to load minconda, create the environment, and unload miniconda.
+   If not, run the following to load miniconda, create the environment, and unload miniconda.
    ```
    module load miniconda3/4.10.3-py37
    conda create -n snakemake -c bioconda -c conda-forge snakemake -y
