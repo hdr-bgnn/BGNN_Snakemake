@@ -3,26 +3,52 @@
 #SBATCH --job-name=segment_test
 #SBATCH --time=00:10:00
 #SBATCH --ntasks=4
+#
+# Runs Snakemake pipeline that downloads, crops, and segments images.
+# There are two required positional arguments.
+# Usage:
+# sbatch SLURM_Snake <WORKDIR> <INPUTCSV>
+# - WORKDIR - Snakemake working directory - contains output files
+# - INPUTCSV - Path to input CSV file specifying images to process
 
-module load miniconda3
-conda init
-source ~/.bashrc
+# Stop if a command fails (non-zero exit status)
+set -e
 
-conda activate local
-conda install -c bioconda -c conda-forge snakemake
+# Verify command line arguments
+WORKDIR=$1
+INPUTCSV=$2
 
-cp $SLURM_SUBMIT_DIR/list_test.csv $TMPDIR
-cp -R $SLURM_SUBMIT_DIR/Images $TMPDIR
-cp $SLURM_SUBMIT_DIR/Snakefile $TMPDIR
-cp -R $SLURM_SUBMIT_DIR/.snakemake $TMPDIR
-cp -R $SLURM_SUBMIT_DIR/.cache $TMPDIR
+# Ensures CSV path is an absolute path.
+# Otherwise snakemake will look for this file within $WORKDIR.
+REAL_INPUTCSV=$(realpath $INPUTCSV)
 
-cd $TMPDIR
+# Make sure the input CSV file exists
+if [ ! -f "$REAL_INPUTCSV" ]
+then
+   echo "ERROR: Required INPUTCSV file $INPUTCSV does not exist."
+   exit 1
+fi
 
-snakemake --cores 4 --use-singularity --config list=list_test.csv
+# Specify cache directories
+CACHEDIR=$(realpath .cache)
+# cache singularity images
+SINGULARITY_IMAGE_DIR=$CACHEDIR/singularity
+# cache pytorch files
+export TORCH_HOME=$CACHEDIR/torch
+# ensure pytorch cache directory exists
+mkdir -p $TORCH_HOME
 
-cd $SLURM_SUBMIT_DIR
-mkdir $SLURM_JOB_ID
-cp -R $TMPDIR/* $SLURM_JOB_ID
+# Activate Snakemake environment
+module load miniconda3/4.10.3-py37
+# Activate using source per OSC instructions
+source activate snakemake
 
+# Run pipeline using Snakemake
+snakemake \
+    --cores $SLURM_NTASKS \
+    --use-singularity \
+    --singularity-prefix $SINGULARITY_IMAGE_DIR \
+    --singularity-args "--bind $TORCH_HOME:$TORCH_HOME" \
+    --directory $WORKDIR \
+    --config list=$REAL_INPUTCSV
 

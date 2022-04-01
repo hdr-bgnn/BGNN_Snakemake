@@ -4,9 +4,8 @@ import glob
 import os
 # pull in all files with .fastq on the end in the 'data' directory.
 
-# list all the file.csv and take the first one
-examples = glob_wildcards('{example}.csv').example[0]
-LIST = config.get('list',f'{examples}.csv')
+LIST = config['list']
+   
 print(f"your are using this list {LIST}")
 
 #df = pd.read_csv(f'{LIST}', sep=',', decimal='.')
