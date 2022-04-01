@@ -21,6 +21,7 @@ NAMES = list(samples_df['original_file_name'])
 NAMES = [os.path.splitext(name)[0] for name in NAMES]
 IMAGES = expand("Images/{image}.jpg", image=NAMES)
 METADATA = expand("Metadata/{image}.json", image=NAMES)
+MASK = expand("Mask/{image}_mask.png", image=NAMES)
 CROPPED = expand("Cropped/{image}_cropped.jpg", image=NAMES)
 SEGMENTED = expand("Segmented/{image}_segmented.png", image=NAMES)
 rule all:
@@ -36,10 +37,12 @@ rule clean:
 # here put a comment
 rule generate_metadata:
     input:'Images/{image}.jpg'
-    output:'Metadata/{image}.json'
+    output:
+        metdata = 'Metadata/{image}.json'
+        mask = 'Mask/{image}_mask.png'
     singularity:
-        'library://thibaulttabarin/bgnn/metadata_generator:v2'
-    shell: 'gen_meta_TT.py {input} {output}'
+        'library://thibaulttabarin/bgnn/gen_metadata:v2'
+    shell: 'gen_metadata.py {input} {output.metadata} {output.mask}'
 
 rule Cropped_image:
     input:
@@ -56,4 +59,4 @@ rule Segmentation:
     singularity:
         'library://thibaulttabarin/bgnn/segment_trait:1'
     shell:
-        'segmentation_main.py {input} {output}'
+        'python Scripts/segmentation_main.py {input} {output}'
