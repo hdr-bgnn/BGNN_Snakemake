@@ -5,7 +5,7 @@ import os
 # pull in all files with .fastq on the end in the 'data' directory.
 
 LIST = config['list']
-   
+
 print(f"your are using this list {LIST}")
 
 #df = pd.read_csv(f'{LIST}', sep=',', decimal='.')
@@ -37,7 +37,7 @@ rule clean:
 rule generate_metadata:
     input:'Images/{image}.jpg'
     output:
-        metdata = 'Metadata/{image}.json'
+        metadata = 'Metadata/{image}.json',
         mask = 'Mask/{image}_mask.png'
     singularity:
         'library://thibaulttabarin/bgnn/gen_metadata:v2'
@@ -49,13 +49,13 @@ rule Cropped_image:
         metadata = 'Metadata/{image}.json'
     output:'Cropped/{image}_cropped.jpg'
     singularity:
-        'library://thibaulttabarin/bgnn/crop_image:v1'
+        'library://thibaulttabarin/bgnn/crop_image:v2'
     shell: 'crop_image.py {input.image} {input.metadata} {output}'
 
 rule Segmentation:
     input: 'Cropped/{image}_cropped.jpg'
     output: 'Segmented/{image}_segmented.png'
     singularity:
-        'library://thibaulttabarin/bgnn/segment_trait:1'
+        'library://thibaulttabarin/bgnn/segment_trait:v2'
     shell:
-        'python Scripts/segmentation_main.py {input} {output}'
+        'segmentation_main.py {input} {output}'
