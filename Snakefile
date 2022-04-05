@@ -49,7 +49,7 @@ rule Cropped_image:
         metadata = 'Metadata/{image}.json'
     output:'Cropped/{image}_cropped.jpg'
     singularity:
-        'library://thibaulttabarin/bgnn/crop_image:v2'
+        'library://thibaulttabarin/bgnn/crop_image:v1'
     shell: 'crop_image.py {input.image} {input.metadata} {output}'
 
 rule Segmentation:
