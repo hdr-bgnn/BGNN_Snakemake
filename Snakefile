@@ -56,6 +56,6 @@ rule Segmentation:
     input: 'Cropped/{image}_cropped.jpg'
     output: 'Segmented/{image}_segmented.png'
     singularity:
-        'library://thibaulttabarin/bgnn/segment_trait:v2'
+        'library://thibaulttabarin/bgnn/segment_trait:v3'
     shell:
         'segmentation_main.py {input} {output}'
