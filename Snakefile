@@ -23,6 +23,7 @@ METADATA = expand("Metadata/{image}.json", image=NAMES)
 MASK = expand("Mask/{image}_mask.png", image=NAMES)
 CROPPED = expand("Cropped/{image}_cropped.jpg", image=NAMES)
 SEGMENTED = expand("Segmented/{image}_segmented.png", image=NAMES)
+
 rule all:
     input:SEGMENTED
 
