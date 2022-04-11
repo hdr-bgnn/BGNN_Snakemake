@@ -6,7 +6,10 @@ images = glob_wildcards('Segmented/{image}_segmented.png').image
 MORPHOLOGY = expand("Morphology/{image}_morph.json", image=images)
 
 rule all:
- input: 'Result_morphology/result.json'
+ input:
+    MORPHOLOGY,
+    'Result_morphology/result.json'
+
 
 rule Morphological_analysis:
     input:
@@ -24,13 +27,14 @@ rule Morphological_analysis:
         'python {params.script} {input.image} {output} {params.name}'
 
 rule Concatenate_morphology:
-    input : 'Morphology/'
+    #input : 'Morphology/'
     output :
         json = 'Result_morphology/result.json',
         csv = 'Result_morphology/result.csv'
     params :
-        srcdir("Scripts/Morphology/Merge_json_files.py"),
+        input_file = 'Morphology/',
+        script = srcdir("Scripts/Morphology/Merge_json_files.py")
     conda :
         "Scripts/Morphology/morphology_env.yml"
     shell:
-        "python {params} {input} {output.json} {output.csv}"
+        "python {params.script} {params.input_file} {output.json} {output.csv}"
