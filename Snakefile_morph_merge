@@ -1,0 +1,40 @@
+######
+
+#SEGMENTED = expand("Segmented/{image}_segmented.png", image=NAMES)
+#MORPHOLOGY = expand("Morphology/{image}_morphology.json", image=NAMES)
+images = glob_wildcards('Segmented/{image}_segmented.png').image
+MORPHOLOGY = expand("Morphology/{image}_morph.json", image=images)
+
+rule all:
+ input:
+    MORPHOLOGY,
+    'Result_morphology/result.json'
+
+
+rule Morphological_analysis:
+    input:
+        image = 'Segmented/{image}_segmented.png',
+        #name = '{image}'
+    output: "Morphology/{image}_morph.json"
+    params:
+        #
+        script = srcdir("Scripts/Morphology/morphology.py"),
+        name = '{image}'
+
+    conda:
+        "Scripts/Morphology/morphology_env.yml"
+    shell:
+        'python {params.script} {input.image} {output} {params.name}'
+
+rule Concatenate_morphology:
+    input : 'Morphology/'
+    output :
+        json = 'Result_morphology/result.json',
+        csv = 'Result_morphology/result.csv'
+    params :
+        input_file = 'Morphology/',
+        script = srcdir("Scripts/Morphology/Merge_json_files.py")
+    conda :
+        "Scripts/Morphology/morphology_env.yml"
+    shell:
+        "python {params.script} {input} {output.json} {output.csv}"

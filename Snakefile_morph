@@ -7,9 +7,7 @@ MORPHOLOGY = expand("Morphology/{image}_morph.json", image=images)
 
 rule all:
  input:
-    MORPHOLOGY,
-    'Result_morphology/result.json'
-
+    MORPHOLOGY
 
 rule Morphological_analysis:
     input:
@@ -25,16 +23,3 @@ rule Morphological_analysis:
         "Scripts/Morphology/morphology_env.yml"
     shell:
         'python {params.script} {input.image} {output} {params.name}'
-
-rule Concatenate_morphology:
-    #input : 'Morphology/'
-    output :
-        json = 'Result_morphology/result.json',
-        csv = 'Result_morphology/result.csv'
-    params :
-        input_file = 'Morphology/',
-        script = srcdir("Scripts/Morphology/Merge_json_files.py")
-    conda :
-        "Scripts/Morphology/morphology_env.yml"
-    shell:
-        "python {params.script} {params.input_file} {output.json} {output.csv}"
