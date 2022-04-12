@@ -83,9 +83,10 @@ def get_scale(metadata_file):
     if first_value['has_ruler']==True:
 
         scale = round(first_value['scale'],3)
+        unit = first_value['unit']
     else: scale =[None]
 
-    return scale
+    return scale , unit
 
 
 def get_morphology_one_trait(trait_key, mask, parameter=None):
@@ -121,10 +122,10 @@ def compare_head_eye(result_head, head, result_eye, eye, metadata_file,  name=No
         coord_eye = eye.centroid
 
         distance_eye_snout =  abs(head.bbox[1]-eye.bbox[1])
-        scale = get_scale(metadata_file)
+        scale , unit = get_scale(metadata_file)
 
     return {name:{"eye_head_ratio" : round(ratio_eye_head,3),
-                "snout_eye_distance": round(distance_eye_snout,3), "scale":scale}}
+                "snout_eye_distance": round(distance_eye_snout,3), "scale":scale, "scale_unit":unit}}
 
 def main(image_path, metadata_file, output_json, name):
 
