@@ -14,6 +14,7 @@ rule all:
 rule Morphological_analysis:
     input:
         image = 'Segmented/{image}_segmented.png',
+        metadata = 'Metadata/{image}.json'
         #name = '{image}'
     output: "Morphology/{image}_morph.json"
     params:
@@ -24,10 +25,10 @@ rule Morphological_analysis:
     conda:
         "Scripts/Morphology/morphology_env.yml"
     shell:
-        'python {params.script} {input.image} {output} {params.name}'
+        'python {params.script} {input.image} {input.metadata} {output} {params.name}'
 
 rule Concatenate_morphology:
-    input : 'Morphology/'
+    input : MORPHOLOGY
     output :
         json = 'Result_morphology/result.json',
         csv = 'Result_morphology/result.csv'
@@ -37,4 +38,4 @@ rule Concatenate_morphology:
     conda :
         "Scripts/Morphology/morphology_env.yml"
     shell:
-        "python {params.script} {input} {output.json} {output.csv}"
+        "python {params.script} {params.input_file} {output.json} {output.csv}"
