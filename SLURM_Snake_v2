@@ -5,9 +5,10 @@
 #SBATCH --ntasks=4
 #
 # Runs Snakemake pipeline that downloads, crops, and segments images.
-# There are two required positional arguments.
+# There are three required positional arguments.
 # Usage:
-# sbatch SLURM_Snake <WORKDIR> <INPUTCSV>
+# sbatch SLURM_Snake <SNAKEFILE> <WORKDIR> <INPUTCSV>
+# - SNAKEFILE - snakefile you want to used
 # - WORKDIR - Snakemake working directory - contains output files
 # - INPUTCSV - Path to input CSV file specifying images to process
 

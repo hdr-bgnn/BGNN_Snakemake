@@ -58,7 +58,7 @@ rule Segmentation:
     input: 'Cropped/{image}_cropped.jpg'
     output: 'Segmented/{image}_segmented.png'
     singularity:
-        'library://thibaulttabarin/bgnn/segment_trait:v3'
+        'library://thibaulttabarin/bgnn/segment_trait:v4'
     shell:
         'segmentation_main.py {input} {output}'
 
@@ -92,4 +92,3 @@ rule Concatenate_morphology:
         "Scripts/Morphology/morphology_env.yml"
     shell:
         "python {params.script} {params.input_file} {output.json} {output.csv}"
-
