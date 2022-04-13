@@ -15,8 +15,9 @@
 set -e
 
 # Verify command line arguments
-WORKDIR=$1
-INPUTCSV=$2
+SNAKEFILE=$1
+WORKDIR=$2
+INPUTCSV=$3
 
 # Ensures CSV path is an absolute path.
 # Otherwise snakemake will look for this file within $WORKDIR.
@@ -29,15 +30,6 @@ then
    exit 1
 fi
 
-# Specify cache directories
-#CACHEDIR=$(realpath .cache)
-# cache singularity images
-#SINGULARITY_IMAGE_DIR=$CACHEDIR/singularity
-# cache pytorch files
-#export TORCH_HOME=$CACHEDIR/torch
-# ensure pytorch cache directory exists
-#mkdir -p $TORCH_HOME
-
 # Activate Snakemake environment
 module load miniconda3/4.10.3-py37
 # Activate using source per OSC instructions
@@ -46,10 +38,10 @@ source activate snakemake
 # Run pipeline using Snakemake
 snakemake \
     --cores $SLURM_NTASKS \
-    --snakefile Snakefile_v2
+    --snakefile $SNAKEFILE \
     --use-singularity \
     --use-conda \
-#    --singularity-prefix $SINGULARITY_IMAGE_DIR \
-#    --singularity-args "--bind $TORCH_HOME:$TORCH_HOME" \
     --directory $WORKDIR \
     --config list=$REAL_INPUTCSV
+
+chmod -R 774 $WORKDIR
