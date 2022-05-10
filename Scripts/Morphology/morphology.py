@@ -84,8 +84,9 @@ def get_scale(metadata_file):
 
         scale = round(first_value['scale'],3)
         unit = first_value['unit']
-    else: scale =[None]
-
+    else:
+        scale =[None]
+        unit =[None]
     return scale , unit
 
 
