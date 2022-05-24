@@ -19,18 +19,6 @@ set -e
 SNAKEFILE=$1
 WORKDIR=$2
 
-
-# Ensures CSV path is an absolute path.
-# Otherwise snakemake will look for this file within $WORKDIR.
-REAL_INPUTCSV=$(realpath $INPUTCSV)
-
-# Make sure the input CSV file exists
-if [ ! -f "$REAL_INPUTCSV" ]
-then
-   echo "ERROR: Required INPUTCSV file $INPUTCSV does not exist."
-   exit 1
-fi
-
 # Activate Snakemake environment
 module load miniconda3/4.10.3-py37
 # Activate using source per OSC instructions
