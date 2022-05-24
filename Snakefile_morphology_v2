@@ -1,0 +1,28 @@
+
+
+NAMES = glob_wildcards('Segmented/{image}_segmented.png').image
+MORPHOLOGY = expand("Morphology_2/Measure/{image}_measure.json", image=NAMES)
+print("Name",NAMES)
+
+rule all:
+    input : MORPHOLOGY
+
+rule Morphological_analysis_v2:
+    input:
+        image = 'Segmented/{image}_segmented.png'
+        #metadata = 'Metadata/{image}.json'
+        #name = '{image}'
+    output:
+        measure = "Morphology_2/Measure/{image}_measure.json",
+        landmark = "Morphology_2/Landmark/{image}_landmark.json",
+        presence = "Morphology_2/Presence/{image}_presence.json",
+        vis_landmarks = "Morphology_2/Vis_landmarks/{image}_landmark_image.png"
+    params:
+        #
+        script = srcdir("Scripts/Morphology/Morphology_main.py"),
+
+
+    conda:
+        "Scripts/Morphology/morphology_env.yml"
+    shell:
+        'python {params.script} {input.image} {output.measure} {output.landmark} {output.presence} {output.vis_landmarks}'
