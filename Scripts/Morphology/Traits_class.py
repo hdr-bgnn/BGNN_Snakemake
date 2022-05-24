@@ -310,23 +310,17 @@ class segmented_image:
         landmark['14'], landmark['13'], _, _, center_eye, _ = self.landmark_generic('eye')     
         
         # head
-        landmark['1'], landmark['12'], landmark['2'] , _, _, new_mask_head = self.landmark_generic('head')
+        landmark['1'], landmark['12'], landmark['2'] , landmark['15'], _, new_mask_head = self.landmark_generic('head')
         # landmark 15
         # head length, vertical line of the head passing by the center of the eye
         col_eye = round(center_eye[1])
         head_vert_line = new_mask_head[:,col_eye]
         #head_length = np.count_nonzero( cleaned_mask[:,col_eye]== 1)
         index_head_len= np.where(head_vert_line!=0)[0]
-        landmark['15'] = (int(index_head_len[-1]),int(col_eye))
-        landmark['16'] =(int(index_head_len[0]),int(col_eye))
+        landmark['16'] = (int(index_head_len[-1]),int(col_eye))
         
-        # head depth
-        row_eye = round(center_eye[0])
-        head_hori_line = new_mask_head[row_eye,:]
-        index_head_dep= np.where(head_hori_line!=0)[0]
-        landmark['hd1'] = (int(row_eye), int(index_head_dep[-1]))
-        landmark['hd2'] =(int(row_eye), int(index_head_dep[0]))
-
+        
+        
         #trunk
         _, landmark['6'],_ ,_ ,_ ,_ = self.landmark_generic('trunk')
         
@@ -383,9 +377,9 @@ class segmented_image:
         Measure vertical length of the head passing by the center of the eye
         '''
         landmark = self.landmark
-        p_16 = landmark['16']
+        p_2 = landmark['2']
         p_15 = landmark['15']
-        head_length = self.get_distance(p_15,p_16)
+        head_length = self.get_distance(p_2,p_15)
         
         return head_length
     
@@ -415,11 +409,11 @@ class segmented_image:
         measure={}
         measure['A'] = self.measure_std_length()
         measure['B'] = self.measure_eye_head_ratio()
-        measure['C'] = 'Coming soon'
-        measure['D'] = self.measure_eye_diameter()
+        measure['C'] = self.measure_eye_diameter()
+        measure['D'] = self.measure_head_depth()
         measure['E'] = self.measure_head_length()
-        measure['F'] = self.measure_head_depth()
-        measure['G'] = self.get_distance(self.landmark['1'],self.landmark['14'])
+        measure['F'] = self.get_distance(self.landmark['1'],self.landmark['14'])
+        measure['G'] = self.get_distance(self.landmark['1'],self.landmark['6'])
         return measure
         
     def visualize_landmark(self):
@@ -431,13 +425,14 @@ class segmented_image:
             img1 = ImageDraw.Draw(img)
         
             #
-            fnt = ImageFont.truetype("Pillow/Tests/fonts/FreeMono.ttf", 15)
+            #fnt = ImageFont.truetype("Pillow/Tests/fonts/FreeMono.ttf", 15)
+            fnt = ImageFont.load_default()
             for i,(k,(x,y)) in enumerate(landmark.items()):
                 
                 xy = [(y-9,x-9),(y+9,x+9)]
                 img1.ellipse(xy, fill='gray', outline=None, width=1)
                 
-                img1.text((y-8, x-8), k, font=fnt, fill='black')
+                img1.text((y-6, x-6), k, font=fnt, fill='black')
             # Display the image created
             
             return img
