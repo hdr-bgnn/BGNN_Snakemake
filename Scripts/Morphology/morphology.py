@@ -26,6 +26,14 @@ color_list = [np.array([0, 0, 0]), np.array([254, 0, 0]),
               np.array([254, 102, 204]), np.array([254, 204, 102]),
               np.array([0, 124, 124])]
 
+color_list = [[0, 0, 0], [254, 0, 0],
+              [0, 254, 0], [0, 0, 254],
+              [254, 254, 0], [0, 254, 254],
+              [254, 0, 254], [254, 254, 254],
+              [0, 254, 102], [254, 102, 102],
+              [254, 102, 204], [254, 204, 102],
+              [0, 124, 124]]
+
 # Create dictionnaries to go from channel to color or from trait to color
 channel_color_dict = {i: j for i, j in enumerate(color_list)}
 trait_color_dict = dict(zip(trait_list, color_list))
@@ -46,11 +54,13 @@ def get_one_trait_mask(img, trait_color_dict, trait_key):
     '''
     Create a mask for a trait define by "trait_key" using "img" (the image array)
     and trait_color_dict (the trait to color dictionnary)
+    input : image, dict {"dorsal_fin" : np.array([0, 0, 0]) }
 
     '''
     color_array = trait_color_dict[trait_key]
-    trait_mask = (img[:, :, 0] == color_array[0]) & (
-        img[:, :, 1] == color_array[1]) & (img[:, :, 2] == color_array[2])
+    trait_mask = (img[:, :, 0] == color_array[0]) &\
+                    (img[:, :, 1] == color_array[1]) &\
+                    (img[:, :, 2] == color_array[2])
 
     return trait_mask
 
@@ -68,24 +78,118 @@ def get_channels_mask(img, trait_color_dict):
 
     mask = {}
     for color, trait in enumerate(trait_color_dict):
-
-        mask[trait] = get_one_trait_mask(
-            img, trait_color_dict, trait).astype("uint8")
+        if trait != "background":
+            
+            mask[trait] = get_one_trait_mask(
+                img, trait_color_dict, trait).astype("uint8")
 
     return mask
 
+def get_region_prop(mask, trait_name):
+    
+    
+    label_trait = label(mask[trait_name])
+    regions_trait = regionprops(label_trait)
+    
+    return regions_trait
+    
+def get_presence_matrix(mask):
+    '''
+    Create a matrix with presence, number of blob, percent of the biggest
+    '''
+    presence_matrix = {}
+    for i, (trait_name, trait_mask) in enumerate(mask.items()):
+
+        temp_dict = {}
+        total_area = sum(sum(trait_mask))
+        label_trait = label(trait_mask)
+        regions_trait = regionprops(label_trait)
+
+        temp_dict["number"] = len(regions_trait)
+        
+        if len(regions_trait) > 0:
+             biggest_region = sorted(regions_trait, key=lambda r: r.area, reverse=True)[0]
+             temp_dict["percentage"] = biggest_region.area/total_area
+        else: 
+            temp_dict["percentage"] = 0
+
+        presence_matrix[trait_name] = temp_dict
+
+    return presence_matrix
+
+def get_one_property_all_trait(mask, property_):
+    
+    dict_property={}
+    for i, (trait_name, trait_mask) in enumerate(mask.items()):
+        
+        dict_property[trait_name]=None
+        
+        label_trait = label(trait_mask)
+        regions_trait = regionprops(label_trait)
+        
+        if regions_trait :
+            
+            biggest_region = sorted(regions_trait, key=lambda r: r.area, reverse=True)[0]
+            dict_property[trait_name] = biggest_region[property_]
+            
+    return dict_property         
+            
+def get_distance(a,b):
+    '''
+    measure distance between to point
+    
+    '''
+    distance=None
+    if a and b:
+        distance = ((a[0] - b[0])**2 + (a[1] - b[1])**2)**0.5
+    return distance
+        
+def get_distance_matrix(dict_centroid):
+    '''
+    Create a matrix with distance between centroid of traits
+    '''
+    distance_matrix = {}
+    dict_temp = dict_centroid.copy()
+    for i, trait_name in enumerate(dict_centroid):
+        
+        centroid = dict_temp.pop(trait_name)
+        
+        if centroid:
+            dist_temp = {k: (get_distance(centroid,v) if v!=None else None) 
+                     for i, (k,v) in enumerate(dict_temp.items())}
+        else: 
+            dist_temp = None
+            
+        distance_matrix[trait_name] = dist_temp
+    
+    return distance_matrix
+        
+def get_Ed():
+    
+    '''
+    measure equivalent eye diameter (area/pi)^1/2 
+    '''
+
+    
+    
+    
 def get_scale(metadata_file):
 
+    '''
+    extract the scale value from metadata file
+    '''
+    
     f = open(metadata_file)
     data = json.load(f)
     first_value = list(data.values())[0]
-    scale =[None]
-    unit =[None]
-    if 'scale' in first_value.keys() :
-        scale = round(first_value['scale'],3)
-    if 'unit' in first_value.keys():        
-        unit = first_value['unit']
 
+    if first_value['ruler']==True :
+
+        scale = round(first_value['scale'],3)
+        unit = first_value['unit']
+    else:
+        scale =[None]
+        unit =[None]
     return scale , unit
 
 
