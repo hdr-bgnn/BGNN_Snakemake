@@ -26,7 +26,6 @@ class segmented_image:
         self.img_arr = self.import_image(file_name)
         self.get_channels_mask()
         self.presence_matrix = self.get_presence_matrix()
-        self.centroid_dict = self.get_one_property_all_trait()
         self.landmark = self.all_landmark()
         self.measurement = self.all_measure()
         
@@ -190,7 +189,7 @@ class segmented_image:
         '''
         Create a matrix with distance between centroid of traits
         '''
-        centroid_dict = self.centroid_dict
+        centroid_dict = self.get_one_property_all_trait()
         distance_matrix = {}
         
         for i, (trait_name, centroid) in enumerate(centroid_dict.items()):
