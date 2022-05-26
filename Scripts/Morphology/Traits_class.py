@@ -427,12 +427,13 @@ class segmented_image:
             #
             #fnt = ImageFont.truetype("Pillow/Tests/fonts/FreeMono.ttf", 15)
             fnt = ImageFont.load_default()
-            for i,(k,(x,y)) in enumerate(landmark.items()):
+            for i,(k,v) in enumerate(landmark.items()):
+                if v:
+                    x,y = v
+                    xy = [(y-9,x-9),(y+9,x+9)]
+                    img1.ellipse(xy, fill='gray', outline=None, width=1)
                 
-                xy = [(y-9,x-9),(y+9,x+9)]
-                img1.ellipse(xy, fill='gray', outline=None, width=1)
-                
-                img1.text((y-6, x-6), k, font=fnt, fill='black')
+                    img1.text((y-6, x-6), k, font=fnt, fill='black')
             # Display the image created
             
             return img
