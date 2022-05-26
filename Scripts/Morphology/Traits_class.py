@@ -99,7 +99,7 @@ class segmented_image:
         return filled
    
     
-    def clean_trait_region(self, trait_mask, percent_cut = 0.8):
+    def clean_trait_region(self, trait_mask, percent_cut = 0.5):
         '''
         Clean the mask_trait (remove holes)
         Find the biggest region
@@ -119,9 +119,10 @@ class segmented_image:
             # Get the biggest instance(blob) of the trait
             biggest_region = sorted(trait_region, key=lambda r: r.area, reverse=True)[0]
             percent = biggest_region.area/total_area
-            if percent >=.8:
+            if percent >=percent_cut:
                 trait_region = biggest_region                
-    
+            else:
+                trait_region =[]
         return trait_region
     
     def get_presence_matrix(self):
@@ -271,32 +272,36 @@ class segmented_image:
         clean_mask = self.clean_trait_region(mask)
         # Create new mask with clean mask, remove hole and secondary blob
         # use clean_mask (region) to reconstruct a mask
-        bbox = clean_mask.bbox
-        new_mask = np.zeros_like(mask)
-        new_mask[bbox[0]:bbox[2],bbox[1]:bbox[3]]=clean_mask.image
+        if clean_mask:
+            bbox = clean_mask.bbox
+            new_mask = np.zeros_like(mask)
+            new_mask[bbox[0]:bbox[2],bbox[1]:bbox[3]]=clean_mask.image
+            
+            x,y = np.where(new_mask)
+            # front
+            x_top=x.min()
+            y_top = round(np.mean(np.where(new_mask[x_top,:])))
+            top_lm = (int(x_top),int(y_top))
+    
+            # back
+            x_bottom=x.max()
+            y_bottom = round(np.mean(np.where(new_mask[x_bottom,:])))
+            bottom_lm = (int(x_bottom),int(y_bottom))
+            
+            #top 
+            y_front = y.min()
+            x_front = round(np.mean(np.where(new_mask[:, y_front,])))
+            front_lm = (int(x_front),int(y_front))
+            
+            #bottom 
+            y_back=y.max()
+            x_back = round(np.mean(np.where(new_mask[:, y_back,])))
+            back_lm = (int(x_back),int(y_back))
+            centroid = clean_mask.centroid
+        else:
+            front_lm , back_lm, top_lm, bottom_lm, centroid, new_mask = [], [], [], [], [], []
         
-        x,y = np.where(new_mask)
-        # front
-        x_top=x.min()
-        y_top = round(np.mean(np.where(new_mask[x_top,:])))
-        top_lm = (int(x_top),int(y_top))
-
-        # back
-        x_bottom=x.max()
-        y_bottom = round(np.mean(np.where(new_mask[x_bottom,:])))
-        bottom_lm = (int(x_bottom),int(y_bottom))
-        
-        #top 
-        y_front = y.min()
-        x_front = round(np.mean(np.where(new_mask[:, y_front,])))
-        front_lm = (int(x_front),int(y_front))
-        
-        #bottom 
-        y_back=y.max()
-        x_back = round(np.mean(np.where(new_mask[:, y_back,])))
-        back_lm = (int(x_back),int(y_back))        
-        
-        return front_lm, back_lm, top_lm, bottom_lm, clean_mask.centroid, new_mask
+        return front_lm, back_lm, top_lm, bottom_lm, centroid, new_mask
     
         
     def all_landmark(self):
@@ -313,10 +318,12 @@ class segmented_image:
         # landmark 15
         # head length, vertical line of the head passing by the center of the eye
         col_eye = round(center_eye[1])
-        head_vert_line = new_mask_head[:,col_eye]
-        #head_length = np.count_nonzero( cleaned_mask[:,col_eye]== 1)
-        index_head_len= np.where(head_vert_line!=0)[0]
-        landmark['16'] = (int(index_head_len[-1]),int(col_eye))
+        
+        if len(new_mask_head):
+            head_vert_line = new_mask_head[:,col_eye]
+            #head_length = np.count_nonzero( cleaned_mask[:,col_eye]== 1)
+            index_head_len= np.where(head_vert_line!=0)[0]
+            landmark['16'] = (int(index_head_len[-1]),int(col_eye))
         
         
         
@@ -331,18 +338,7 @@ class segmented_image:
 
         
         return landmark
-    
-    def measure_std_length(self):
-        '''
-        measure standart length
-        
-        '''
-        landmark = self.landmark
-        p_1 = landmark['1']
-        p_6 = landmark['6']
-        std_length = self.get_distance(p_1,p_6)
-        
-        return std_length
+
     
     def measure_eye_head_ratio(self):
         '''
@@ -405,14 +401,19 @@ class segmented_image:
         '''
         Collect all the measurment for the fish
         '''
+        landmark = self.landmark
         measure={}
-        measure['A'] = self.measure_std_length()
+        # Standard length body length 
+        measure['A'] = self.get_distance(landmark['1'],landmark['6'])
         measure['B'] = self.measure_eye_head_ratio()
         measure['C'] = self.measure_eye_diameter()
         measure['D'] = self.measure_head_depth()
-        measure['E'] = self.measure_head_length()
-        measure['F'] = self.get_distance(self.landmark['1'],self.landmark['14'])
-        measure['G'] = self.get_distance(self.landmark['1'],self.landmark['6'])
+        # Head length landmark 2 to 15
+        measure['E'] = self.get_distance(landmark['2'],landmark['15'])
+        # 
+        measure['F'] = self.get_distance(landmark['1'],landmark['14'])
+        # 
+        measure['G'] = self.get_distance(landmark['1'],landmark['6'])
         return measure
         
     def visualize_landmark(self):
