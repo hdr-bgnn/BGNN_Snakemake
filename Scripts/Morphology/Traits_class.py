@@ -6,12 +6,11 @@ Created on Wed May 18 16:02:54 2022
 @author: thibault
 Class definition for morpholopgy analysis
 """
-import os, sys, math
+import os, sys, math, json
 import numpy as np
-from PIL import Image, ImageDraw, ImageFont
+from PIL import Image, ImageDraw, ImageFonts
 from skimage.measure import label, regionprops
 from skimage.morphology import reconstruction
-import json
 
 class segmented_image:
     

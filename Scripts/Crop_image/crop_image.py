@@ -38,6 +38,11 @@ def main(image_file, metadata_file, output_file):
     bbox = get_bbox(metadata_file)
 
     if bbox:
+        # 10% increase of the bbox, metadata bbox is very tight sometime too tight
+        left,top,right,bottom = bbox
+        h_increase = int(abs((right-left)*0.05))
+        v_increase = int(abs((-left)*0.05))
+        bbox = [left-h_increase, top-v_increase, right+h_increase, bottom+v_increase]
         im1 = im.crop(bbox) # bbox [left,top,right,bottom]
 
     else:
