@@ -113,10 +113,6 @@ there are 3 containers of interest:
    
    To submit a job to OSC I use the script [SLURM_Snake](SLURM_Snake).
    
-   This script requires passing in:
-   - a data directory to hold all data for a single run
-   - a CSV file that contains details about the image files to process
-   
    Usage, connect to the login node
    
    ```ssh <username>@pitzer```
@@ -136,14 +132,24 @@ there are 3 containers of interest:
    module purge
    ```
    
+   The SLURM_snake script has the following positional arguments:
+   - a data directory to hold all data for a single run - **required**
+   - a CSV file that contains details about the image files to process - **required**
+   - the number of jobs for Snakemake to run at once - **optional defaults to 4**   
+ 
    The `SLURM_Snake` script should be run with arguments like so:
    ```
-   sbatch SLURM_Snake <data_directory> <path_to_csv>
+   sbatch SLURM_Snake <data_directory> <path_to_csv> [number_of_jobs]
    ```
    For example if you want to store the data files at the relative path of `data/list_test` and processs `List/list_test.csv` run the following:
    
    ```
    sbatch SLURM_Snake data/list_test List/list_test.csv
+   ```
+
+   To run the example with up to 8 parallel jobs run the command like so:
+   ```
+   sbatch SLURM_Snake data/list_test List/list_test.csv 8
    ```
    
    To check the process
@@ -161,3 +167,15 @@ there are 3 containers of interest:
    Metadata/
    Segmented/
    ```
+   
+   ---
+   
+   The `SLURM_Snake` script configures Snakemake to submit separate sbatch jobs for each step run.
+   Details about individual steps can be seen by running the `sacct` command.
+   
+   For example:
+   ```
+   sacct --format JobID,JobName%40,State,Elapsed,ReqMem,MaxRSS
+   ```
+   Keep in mind that `sacct` defaults to showing jobs from the current day. See [sacct docs](https://slurm.schedmd.com/sacct.html#SECTION_DEFAULT-TIME-WINDOW) for options to specify a different time range.
+
