@@ -57,6 +57,6 @@ rule Segmentation:
     input: 'Cropped/{image}_cropped.jpg'
     output: 'Segmented/{image}_segmented.png'
     singularity:
-        'library://thibaulttabarin/bgnn/segment_trait:v4'
+        'docker://ghcr.io/hdr-bgnn/bgnn-trait-segmentation:0.0.4'
     shell:
         'segmentation_main.py {input} {output}'
