@@ -50,8 +50,8 @@ rule Cropped_image:
         metadata = 'Metadata/{image}.json'
     output:'Cropped/{image}_cropped.jpg'
     singularity:
-        'library://thibaulttabarin/bgnn/crop_image:v1'
-    shell: 'crop_image.py {input.image} {input.metadata} {output}'
+        'docker://ghcr.io/hdr-bgnn/bgnn_snakemake:latest'
+    shell: 'python /pipeline/crop/crop_image.py {input.image} {input.metadata} {output}'
 
 rule Segmentation:
     input: 'Cropped/{image}_cropped.jpg'

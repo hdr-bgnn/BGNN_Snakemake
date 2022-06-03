@@ -45,8 +45,9 @@ RUN curl -sLo ~/miniconda.sh https://repo.anaconda.com/miniconda/Miniconda3-py38
 WORKDIR /pipeline
 
 # Setup pipeline specific scripts
-ENV PATH="/pipeline:${PATH}"
-ADD Crop_image/crop_image.py /pipeline/crop/crop_image.py
+ENV PATH="/pipeline/Morphology:${PATH}"
+ENV PATH="/pipeline/Crop:${PATH}"
+ADD Crop_image/Crop_image.py /pipeline/Crop/Crop_image.py
 ADD Morphology/Traits_class.py /pipeline/Morphology/Traits_class.py
 ADD Morphology/Morphology_main.py /pipeline/Morphology/Morphology_main.py
 
