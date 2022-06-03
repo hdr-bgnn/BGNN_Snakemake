@@ -47,7 +47,7 @@ WORKDIR /pipeline
 # Setup pipeline specific scripts
 ENV PATH="/pipeline/Morphology:${PATH}"
 ENV PATH="/pipeline/Crop:${PATH}"
-ADD Crop_image/Crop_image.py /pipeline/Crop/Crop_image.py
+ADD Crop_image/Crop_image_main.py /pipeline/Crop/Crop_image_main.py
 ADD Morphology/Traits_class.py /pipeline/Morphology/Traits_class.py
 ADD Morphology/Morphology_main.py /pipeline/Morphology/Morphology_main.py
 
