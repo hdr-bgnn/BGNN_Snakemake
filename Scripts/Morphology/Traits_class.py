@@ -8,7 +8,7 @@ Class definition for morpholopgy analysis
 """
 import os, sys, math, json
 import numpy as np
-from PIL import Image, ImageDraw, ImageFonts
+from PIL import Image, ImageDraw, ImageFont
 from skimage.measure import label, regionprops
 from skimage.morphology import reconstruction
 
