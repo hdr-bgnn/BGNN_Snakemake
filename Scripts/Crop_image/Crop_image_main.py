@@ -1,4 +1,4 @@
-#!/usr/local/bin/python
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
 Created on Wed Jan 12 13:00:22 2022
@@ -6,7 +6,7 @@ Created on Wed Jan 12 13:00:22 2022
 @author: thibault
 Contain functions to get the bounding box (bbox) from the metadata file
 and crop the fish out of the image from the bbox
-everything is wrap into a main function executable via 
+everything is wrap into a main function executable via
 python crop_main.py <image> <metadatafile> <output_crop>
 """
 
