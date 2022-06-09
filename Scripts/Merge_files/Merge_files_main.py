@@ -22,7 +22,7 @@ def get_list_2 (input_directory, ext=".json"):
 
     return files_list
 
-def merge_JsonFiles(files_list, output_json, output_csv=None):
+def merge_JsonFiles(files_list, output_json, output_csv):
     '''
     merge the json file from the "files_list" and saved the combine result in output
     '''
@@ -37,9 +37,10 @@ def merge_JsonFiles(files_list, output_json, output_csv=None):
     for f1 in files_list:
         with open(f1, 'r') as infile:
             result = {**result, **json.load(infile)}
-
-    with open(output_json, 'w') as output_file:
-        json.dump(result, output_file)
+    # save as json
+    if output_json !=None:
+        with open(output_json, 'w') as output_file:
+            json.dump(result, output_file)
 
     # save as cvs
     if output_csv !=None:
@@ -47,7 +48,7 @@ def merge_JsonFiles(files_list, output_json, output_csv=None):
         df = pd.DataFrame.from_dict(result).T
         df.to_csv(output_csv, index=True)
 
-def main(input_directory, output_json, output_csv):
+def main(input_directory, output_csv=None, output_json=None):
 
     files_list = get_list_2 (input_directory, ext=".json")
     merge_JsonFiles(files_list, output_json, output_csv)
@@ -56,7 +57,14 @@ def main(input_directory, output_json, output_csv):
 if __name__ == '__main__':
 
     input_dir = sys.argv[1]
-    output_json = sys.argv[2]
-    output_csv = sys.argv[3]
+    output_csv = None
+    output_json = None
+    
+    if len(sys.argv) ==3:
+        output_csv = sys.argv[2]
+        
+    elif len(sys.argv) == 4
+        output_csv = sys.argv[2]
+        output_csv = sys.argv[3]
 
-    main(input_dir, output_json, output_csv)
+    main(input_dir,  output_csv=output_csv, output_json=output_json)
