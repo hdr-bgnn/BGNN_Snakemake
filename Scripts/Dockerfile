@@ -47,10 +47,13 @@ WORKDIR /pipeline
 # Setup pipeline specific scripts
 ENV PATH="/pipeline/Morphology:${PATH}"
 ENV PATH="/pipeline/Crop:${PATH}"
+ENV PATH="/pipeline/Merge_files:${PATH}"
 ADD Crop_image/Crop_image_main.py /pipeline/Crop/Crop_image_main.py
 ADD Morphology/Traits_class.py /pipeline/Morphology/Traits_class.py
 ADD Morphology/Morphology_main.py /pipeline/Morphology/Morphology_main.py
+ADD Merge_files/Merge_files_main.py /pipeline/Merge_files/Merge_files_main.py
 
 # Set the default command to a usage statement
-CMD echo "Usage crop: crop.py <input_jpg_path> <output_png_path>\n"\
-"Usage Morphology: Morphology_main.py  <input_file> <measure.json> <landmark.json> <presence.json> <image_lm.png>"
+CMD echo "Usage crop: Crop_image_main.py <input_image.jpg> <image_metadata.json> <image_cropped.png>\n"\
+"Usage Morphology: Morphology_main.py  <input_file> <measure.json> <landmark.json> <presence.json> <image_lm.png>\n"\
+"Usage Merge_file: Merge_files_main.py  <input_directory> <merge.csv> <merge.json>"
