@@ -49,7 +49,7 @@ rule Cropped_image:
         metadata = 'Metadata/{image}.json'
     output:'Cropped/{image}_cropped.jpg'
     singularity:
-        'docker://ghcr.io/hdr-bgnn/bgnn_snakemake/crop_morph:0.0.10'
+        'docker://ghcr.io/hdr-bgnn/bgnn_snakemake/crop_morph:latest'
     shell: 'Crop_image_main.py {input.image} {input.metadata} {output}'
 
 rule Segmentation:
@@ -63,17 +63,17 @@ rule Segmentation:
 rule Morphological_analysis:
     input:
         image = 'Segmented/{image}_segmented.png',
-        metadata = 'Metadata/{image}.json'
-        #name = '{image}'
+	metadata = 'Metadata/{image}.json'
     output:
         measure = "Morphology/Measure/{image}_measure.json",
         landmark = "Morphology/Landmark/{image}_landmark.json",
         presence = "Morphology/Presence/{image}_presence.json",
         vis_landmarks = "Morphology/Vis_landmarks/{image}_landmark_image.png"
+   
     singularity:
-        "docker://ghcr.io/hdr-bgnn/bgnn_snakemake/crop_morph:0.0.10"
+        "docker://ghcr.io/hdr-bgnn/bgnn_snakemake/crop_morph:0.0.13"
     shell:
-        'Morphology_main.py {input.image} {output.measure} {output.landmark} {output.presence} {output.vis_landmarks} {input.metadata}'
+        'Morphology_main.py {input.image} {input.metadata} {output.measure} {output.landmark} {output.presence} {output.vis_landmarks}'
 
 # This is not executed in this version, it should be executed at the end when you want to collect the .csv with
 # all the results
