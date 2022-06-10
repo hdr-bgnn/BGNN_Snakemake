@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/env python 3
 # -*- coding: utf-8 -*-
 """
 Created on Tue May 24 09:21:33 2022
@@ -28,18 +28,19 @@ def get_scale(metadata_file):
     return scale , unit
 
 
-def main(input_file, output_measure, output_landmark, output_presence, 
-         output_lm_image=None, metadata_file=None):
+def main(input_file, metadata_file, output_measure, output_landmark, output_presence, 
+         output_lm_image=None):
     
     img_seg = tc.segmented_image(input_file)
     measurement = img_seg.measurement
     landmark = img_seg.landmark
     presence_matrix = img_seg.presence_matrix
     
-    if metadata_file:
-        scale , unit = get_scale(metadata_file)
-        measurement['scale'] = scale
-        measurement['unit'] = unit                   
+    # Extract the scale from metadata file
+    # and add it to measurement dict
+    scale , unit = get_scale(metadata_file)
+    measurement['scale'] = scale
+    measurement['unit'] = unit                   
     
     # Save the dictionnaries in json file
     with open(output_measure, 'w') as f:
@@ -60,18 +61,15 @@ def main(input_file, output_measure, output_landmark, output_presence,
 if __name__ == '__main__':
 
     input_file = sys.argv[1]
-    output_measure = sys.argv[2]
-    output_landmark = sys.argv[3]
-    output_presence = sys.argv[4]
+    metadata_file = sys.argv[2]
+    output_measure = sys.argv[3]
+    output_landmark = sys.argv[4]
+    output_presence = sys.argv[5]
     output_lm_image = None
-    metadata_file = None
     
-    if len(sys.argv)==6:
-        output_lm_image = sys.argv[5]
     
     if len(sys.argv)==7:
-        metadata_file = sys.argv[6]
-
+        output_lm_image = sys.argv[6]
         
-    main(input_file, output_measure, output_landmark, output_presence, 
-         output_lm_image=output_lm_image, metadata_file=metadata_file)
+    main(input_file, metadata_file, output_measure, output_landmark, output_presence, 
+         output_lm_image=output_lm_image)
