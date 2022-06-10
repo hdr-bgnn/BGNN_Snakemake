@@ -41,7 +41,6 @@ snakemake \
     --cores $SLURM_NTASKS \
     --snakefile $SNAKEFILE \
     --use-singularity \
-    --use-conda \
     --directory $WORKDIR \
     --config list=$REAL_INPUTCSV
 

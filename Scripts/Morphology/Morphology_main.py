@@ -18,7 +18,7 @@ def get_scale(metadata_file):
     data = json.load(f)
     first_value = list(data.values())[0]
 
-    if first_value['ruler']==True :
+    if first_value['has_ruler']==True :
 
         scale = round(first_value['scale'],3)
         unit = first_value['unit']

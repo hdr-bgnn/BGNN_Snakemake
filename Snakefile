@@ -50,7 +50,7 @@ rule Cropped_image:
     output:'Cropped/{image}_cropped.jpg'
     singularity:
         'docker://ghcr.io/hdr-bgnn/bgnn_snakemake/crop_morph:0.0.10'
-    shell: 'Crop_image_main.py.py {input.image} {input.metadata} {output}'
+    shell: 'Crop_image_main.py {input.image} {input.metadata} {output}'
 
 rule Segmentation:
     input: 'Cropped/{image}_cropped.jpg'
@@ -62,7 +62,7 @@ rule Segmentation:
 
 rule Morphological_analysis:
     input:
-        image = 'Segmented/{image}_segmented.png'
+        image = 'Segmented/{image}_segmented.png',
         metadata = 'Metadata/{image}.json'
         #name = '{image}'
     output:
