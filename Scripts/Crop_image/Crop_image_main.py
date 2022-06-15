@@ -17,7 +17,7 @@ import numpy as np
 from PIL import Image
 import pandas as pd
 from pathlib import Path
-
+ImageFile.LOAD_TRUNCATED_IMAGES = True
 
 def get_bbox(metadata_file):
 
