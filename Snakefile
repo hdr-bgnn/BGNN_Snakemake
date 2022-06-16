@@ -49,7 +49,7 @@ rule Cropped_image:
         metadata = 'Metadata/{image}.json'
     output:'Cropped/{image}_cropped.jpg'
     singularity:
-        'docker://ghcr.io/hdr-bgnn/bgnn_snakemake/crop_morph:latest'
+        'docker://ghcr.io/hdr-bgnn/bgnn_snakemake/crop_morph:0.0.15'
     shell: 'Crop_image_main.py {input.image} {input.metadata} {output}'
 
 rule Segmentation:
@@ -71,7 +71,7 @@ rule Morphological_analysis:
         vis_landmarks = "Morphology/Vis_landmarks/{image}_landmark_image.png"
    
     singularity:
-        "docker://ghcr.io/hdr-bgnn/bgnn_snakemake/crop_morph:0.0.13"
+        "docker://ghcr.io/hdr-bgnn/bgnn_snakemake/crop_morph:0.0.15"
     shell:
         'Morphology_main.py {input.image} {input.metadata} {output.measure} {output.landmark} {output.presence} {output.vis_landmarks}'
 
@@ -83,6 +83,6 @@ rule Merge_files:
     params :
         input_file = 'Morphology/',
     singularity:
-        "docker://ghcr.io/hdr-bgnn/bgnn_snakemake/crop_morph:0.0.10"
+        "docker://ghcr.io/hdr-bgnn/bgnn_snakemake/crop_morph:0.0.15"
     shell:
         "Merge_files_main.py {params.input_file} {output}"

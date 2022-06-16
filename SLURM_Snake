@@ -1,7 +1,7 @@
 #!/bin/bash
 #SBATCH --account=PAS2136
 #SBATCH --job-name=Download_2_Morph
-#SBATCH --time=01:00:00
+#SBATCH --time=02:30:00
 #
 # Runs Snakemake pipeline that downloads, crops, and segments images.
 # There are three required positional arguments.
@@ -48,5 +48,4 @@ snakemake \
     --use-singularity \
     --directory $WORKDIR \
     --config list=$REAL_INPUTCSV
-
 chmod -R 774 $WORKDIR
