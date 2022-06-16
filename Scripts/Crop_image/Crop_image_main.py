@@ -14,7 +14,7 @@ import os
 import sys
 import json
 import numpy as np
-from PIL import Image
+from PIL import Image, ImageFile
 import pandas as pd
 from pathlib import Path
 ImageFile.LOAD_TRUNCATED_IMAGES = True
