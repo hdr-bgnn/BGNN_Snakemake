@@ -13,7 +13,9 @@ The segmentation workflow consists of the following steps:
 
 These 4 steps are represented in the following workflow diagram
 
-![Workflow overview](https://github.com/hdr-bgnn/BGNN_Snakemake/blob/main/Snakemake_workflow.png)
+![Workflow overview 1](https://github.com/hdr-bgnn/BGNN_Snakemake/tree/main/Picture_doc/Workflw_stage_1.png)
+
+![Workflow overview 2](https://github.com/hdr-bgnn/BGNN_Snakemake/tree/main/Picture_doc/Workflw_stage_2.png)
 
 ## Workflow components
 
