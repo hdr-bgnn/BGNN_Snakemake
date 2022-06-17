@@ -12,6 +12,7 @@ The segmentation workflow consists of the following steps:
 4. Segment traits (container) using code developed by Maruf and reorganize by Thibault https://github.com/hdr-bgnn/BGNN-trait-segmentation/tree/segment_mini
 
 These 4 steps are represented in the following workflow diagram
+![Workflw_stage_1](https://user-images.githubusercontent.com/50921014/174411467-687a8b63-1fd3-4d00-8b29-944bfc99ac2f.png)
 
 ![Workflow overview 1](https://github.com/hdr-bgnn/BGNN_Snakemake/tree/main/Workflw_stage_1.png)
 
