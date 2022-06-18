@@ -5,11 +5,13 @@ First complete version of the BGNN image segmentation workflow managed using sna
 
 The image segmentation workflow is managed using snakemake, a user-friendly python workflow manager. Snakemake uses a syntax based on python and can use python code in the definition of the workflow. 
 
-The segmentation workflow consists of the following steps:
-1. Download the image(s) using a simple bash script
-2. Get metadata (container) using code develop by Drexel (Joel, Kevin and Jane) https://github.com/hdr-bgnn/drexel_metadata/tree/kevin
-3. Crop the image using bounding box from metadata (container) using code developed by Thibault.
-4. Segment traits (container) using code developed by Maruf and reorganize by Thibault https://github.com/hdr-bgnn/BGNN-trait-segmentation/tree/segment_mini
+The segmentation workflow consists of the following steps each defined by a "rule". 
+The output of each rule is store to specific folder:
+   1. Download the fish **Images** from Tulane server using a simple bash script: Folder: Images/
+   2. Extract **Metadata** information using Detectron2 (deep learning segmentation). The 2 important parameters used, are the bounding box(bbox) around the fish and scale (pixel/cm from the ruler). The code developed by Drexel and the script used can be found [here](https://github.com/hdr-bgnn/drexel_metadata/blob/Thibault/gen_metadata_mini/scripts/gen_metadata.py). Folder: Metadata/
+   3.	Create **Cropped** images of the fish using the bounding box from Metadata (we had 10% increase in size from the original bbox to prevent truncation of the file). The code is under the [Scripts](https://github.com/hdr-bgnn/BGNN_Snakemake/blob/main/Scripts). Folder Crop/ 
+   4. **Segment** traits using code developed by Maruf and reorganize by Thibault [here](https://github.com/hdr-bgnn/BGNN-trait-segmentation/blob/segment_mini). Folder Segment/
+   5. First version to	Extraction of **morphology** traits, including linear measurements, areas, ratios, and landmarks. This part is done in collaboration between Battelle (Meghan, Paula and I) and Yasin. The code is under the [Scripts](https://github.com/hdr-bgnn/BGNN_Snakemake/blob/main/Scripts/Morphology). Folder Morphology/ 
 
 These 4 steps are represented in the following workflow diagram
 
@@ -27,11 +29,13 @@ These 4 steps are represented in the following workflow diagram
    - Generating metadata (in particular bounding box, bbox)
    - cropping the fish using bbox and generating cropped image
    - traits segmentation
+   - mrophology
  
 I believe the scripts should live on their respective repository. This part is still a bit comfusing... Need to work on that.
  
 4. Containers
    - these are available at https://cloud.sylabs.io/library/thibaulttabarin
+   - 
 
 5. Data
    - Images/ : store the ouput from the Download step. Images downloaded from Tulane server
@@ -70,15 +74,26 @@ I believe the scripts should live on their respective repository. This part is s
 # 5- Containers location
 
 The containers related to this project are located at https://cloud.sylabs.io/library/thibaulttabarin
+Some of the containers are created using github action, some other are created using singularity remote builder. We are currently transitioning all the containers to github action.
 
 there are 3 containers of interest:
 
-* BGNN/segment_trait : 
-   ```singularity pull --arch amd64 library://thibaulttabarin/bgnn/segment_trait:1```
+
 * BGNN/Metadata_generator :
-   ```singularity pull --arch amd64 library://thibaulttabarin/bgnn/metadata_generator:v2 ```
+   ```
+   singularity pull --arch amd64 library://thibaulttabarin/bgnn/metadata_generator:v2
+   Usage : gen_metadata.py {image.jpg} {metadata.json} {mask.jpg}
+   ```
 * BGNN/crop_image :
-    ```singularity pull --arch amd64 library://thibaulttabarin/bgnn/crop_image:v1```
+    ```
+    docker://ghcr.io/hdr-bgnn/bgnn_snakemake/crop_morph:0.0.16
+    Usage : Crop_image_main.py {image.jpg} {metadata.json} {Cropped.jpg}
+    ```
+* BGNN/segment_trait with github action: 
+   ```
+   docker://ghcr.io/hdr-bgnn/bgnn-trait-segmentation:0.0.4
+   Usage : segmentation_main.py {Cropped.png} {Segmented.png}
+   ```
 
 # 6- Quick start with OSC
 
@@ -168,6 +183,7 @@ there are 3 containers of interest:
    Cropped/
    Metadata/
    Segmented/
+   Morphology/
    ```
    
    ---
