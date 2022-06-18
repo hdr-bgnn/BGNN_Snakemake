@@ -9,7 +9,7 @@ The segmentation workflow consists of the following steps each defined by a "rul
 The output of each rule is store to specific folder:
    1. Download the fish **Images** from Tulane server using a simple bash script: Folder: Images/
    2. Extract **Metadata** information using Detectron2 (deep learning segmentation). The 2 important parameters used, are the bounding box(bbox) around the fish and scale (pixel/cm from the ruler). The code developed by Drexel and the script used can be found [here](https://github.com/hdr-bgnn/drexel_metadata/blob/Thibault/gen_metadata_mini/scripts/gen_metadata.py). Folder: Metadata/
-   3.	Create **Cropped** images of the fish using the bounding box from Metadata (we had 10% increase in size from the original bbox to prevent truncation of the file). The code is under the [Scripts](https://github.com/hdr-bgnn/BGNN_Snakemake/blob/main/Scripts). Folder Crop/ 
+   3.	Create **Cropped** images of the fish using the bounding box from Metadata (we had 10% increase in size from the original bbox to prevent truncation of the file). The code is under the [Scripts](https://github.com/hdr-bgnn/BGNN_Snakemake/blob/main/Scripts/Crop_image). Folder Crop/ 
    4. **Segment** traits using code developed by Maruf and reorganize by Thibault [here](https://github.com/hdr-bgnn/BGNN-trait-segmentation/blob/segment_mini). Folder Segment/
    5. First version to	Extraction of **morphology** traits, including linear measurements, areas, ratios, and landmarks. This part is done in collaboration between Battelle (Meghan, Paula and I) and Yasin. The code is under the [Scripts](https://github.com/hdr-bgnn/BGNN_Snakemake/blob/main/Scripts/Morphology). Folder Morphology/ 
 
@@ -29,19 +29,21 @@ These 4 steps are represented in the following workflow diagram
    - Generating metadata (in particular bounding box, bbox)
    - cropping the fish using bbox and generating cropped image
    - traits segmentation
-   - mrophology
+   - morphology
  
 I believe the scripts should live on their respective repository. This part is still a bit comfusing... Need to work on that.
+Yes I agree we are try to do it. WIP
  
 4. Containers
    - these are available at https://cloud.sylabs.io/library/thibaulttabarin
-   - 
+   - The rest is in the release on their respective gihub repo
 
 5. Data
    - Images/ : store the ouput from the Download step. Images downloaded from Tulane server
    - Metadata/ : store the output from generate_metadata.py code developed by Drexel team. One file ".json" per image
    - Cropped/ : store the ouput from Crop image. 
    - Segmented/ : store the ouput from Segment trait using code developed by M. Maruf (Virginia Tech)
+   - Morphology/ : in development, current version (1) has been develop by Thibault Tabarin (Battelle)
 
 # 2- Setup and Requirements
 
@@ -71,7 +73,7 @@ I believe the scripts should live on their respective repository. This part is s
    snakemake --cores 1 --use-singularity --config list=List/list_lepomis_INHS.csv
    ```
 
-# 5- Containers location
+# 5- Codes and Containers location
 
 The containers related to this project are located at https://cloud.sylabs.io/library/thibaulttabarin
 Some of the containers are created using github action, some other are created using singularity remote builder. We are currently transitioning all the containers to github action.
@@ -79,22 +81,26 @@ Some of the containers are created using github action, some other are created u
 there are 3 containers of interest:
 
 
-* BGNN/Metadata_generator :
+* [Metadata_generator](https://github.com/hdr-bgnn/drexel_metadata/blob/Thibault/gen_metadata_mini/scripts/gen_metadata.py) :
    ```
    singularity pull --arch amd64 library://thibaulttabarin/bgnn/metadata_generator:v2
    Usage : gen_metadata.py {image.jpg} {metadata.json} {mask.jpg}
    ```
-* BGNN/crop_image :
+* [Crop_image](https://github.com/hdr-bgnn/BGNN_Snakemake/blob/main/Scripts/Crop_image) :
     ```
     docker://ghcr.io/hdr-bgnn/bgnn_snakemake/crop_morph:0.0.16
     Usage : Crop_image_main.py {image.jpg} {metadata.json} {Cropped.jpg}
     ```
-* BGNN/segment_trait with github action: 
+* [segment_trait](https://github.com/hdr-bgnn/BGNN-trait-segmentation/blob/segment_mini):  
    ```
    docker://ghcr.io/hdr-bgnn/bgnn-trait-segmentation:0.0.4
    Usage : segmentation_main.py {Cropped.png} {Segmented.png}
    ```
-
+* [Morphology](https://github.com/hdr-bgnn/BGNN_Snakemake/blob/main/Scripts/Morphology) :
+    ```
+    docker://ghcr.io/hdr-bgnn/bgnn_snakemake/crop_morph:0.0.16
+    Usage : Crop_image_main.py {image.jpg} {metadata.json} {Cropped.jpg}
+    ```
 # 6- Quick start with OSC
 
 ## 1- Using interactive (command sinteractive)
