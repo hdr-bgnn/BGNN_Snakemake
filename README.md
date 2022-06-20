@@ -79,7 +79,7 @@ Yes I agree we are try to do it. WIP
 
 Some of the containers are created using github action, some other are created using singularity remote builder. We are currently transitioning all the containers to github action.
 
-there are 3 containers of interest:
+there are 4 containers of interest (Crop_image and Morphology function are contained in the same container:
 
 
 * [Metadata_generator](https://github.com/hdr-bgnn/drexel_metadata/blob/Thibault/gen_metadata_mini/scripts/gen_metadata.py) :
@@ -92,7 +92,7 @@ there are 3 containers of interest:
     docker://ghcr.io/hdr-bgnn/bgnn_snakemake/crop_morph:0.0.16
     Usage : Crop_image_main.py {image.jpg} {metadata.json} {Cropped.jpg}
     ```
-* [segment_trait](https://github.com/hdr-bgnn/BGNN-trait-segmentation/blob/segment_mini):  
+* [Segment_trait](https://github.com/hdr-bgnn/BGNN-trait-segmentation/blob/segment_mini):  
    ```
    docker://ghcr.io/hdr-bgnn/bgnn-trait-segmentation:0.0.4
    Usage : segmentation_main.py {Cropped.png} {Segmented.png}
@@ -100,7 +100,7 @@ there are 3 containers of interest:
 * [Morphology](https://github.com/hdr-bgnn/BGNN_Snakemake/blob/main/Scripts/Morphology) :
     ```
     docker://ghcr.io/hdr-bgnn/bgnn_snakemake/crop_morph:0.0.16
-    Usage : Crop_image_main.py {image.jpg} {metadata.json} {Cropped.jpg}
+    Usage : Morphology_main.py  <Segemented.png> {metadata.json} {measure.json} {landmark.json} {presence.json} {image_lm.png}
     ```
 # 6- Quick start with OSC
 
@@ -184,13 +184,14 @@ there are 3 containers of interest:
    
    *Comment*: this script will create a slurm-job_ID.out log file.
    
-   The `data_directory` will contain the following directory structure:
+   The `data_directory` will contain the following directory structure (plus some log and cache file):
    ```
    Images/
    Cropped/
    Metadata/
+   Mask/
    Segmented/
-   Morphology/
+   Morphology/Measure, Morphology/Presence\, Morphology/Landmark, Morphology/Vis_landmark
    ```
    
    ---
