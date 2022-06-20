@@ -8,10 +8,10 @@ The image segmentation workflow is managed using snakemake, a user-friendly pyth
 The segmentation workflow consists of the following steps each defined by a "rule". 
 The output of each rule is store to specific folder:
    1. Download the fish **Images** from Tulane server using a simple bash script: Folder: Images/
-   2. Extract **Metadata** information using Detectron2 (deep learning segmentation). The 2 important parameters used, are the bounding box(bbox) around the fish and scale (pixel/cm from the ruler). The code developed by Drexel and the script used can be found [here](https://github.com/hdr-bgnn/drexel_metadata/blob/Thibault/gen_metadata_mini/scripts/gen_metadata.py). Folder: Metadata/
-   3.	Create **Cropped** images of the fish using the bounding box from Metadata (we had 10% increase in size from the original bbox to prevent truncation of the file). The code is under the [Scripts](https://github.com/hdr-bgnn/BGNN_Snakemake/blob/main/Scripts/Crop_image). Folder Crop/ 
-   4. **Segment** traits using code developed by Maruf and reorganize by Thibault [here](https://github.com/hdr-bgnn/BGNN-trait-segmentation/blob/segment_mini). Folder Segment/
-   5. First version to	Extraction of **morphology** traits, including linear measurements, areas, ratios, and landmarks. This part is done in collaboration between Battelle (Meghan, Paula and I) and Yasin. The code is under the [Scripts](https://github.com/hdr-bgnn/BGNN_Snakemake/blob/main/Scripts/Morphology). Folder Morphology/ 
+   2. Extract **Metadata** information using Detectron2 (deep learning segmentation). The 2 important parameters used from the metadata, are the bounding box(bbox) around the fish and scale (pixel/cm from the ruler). Additionally, we save the mask of the fish outline. The code developed by Drexel and the script used can be found [here](https://github.com/hdr-bgnn/drexel_metadata/blob/Thibault/gen_metadata_mini/scripts/gen_metadata.py). **Folder: Metadata/ and Mask/**
+   3.	Create **Cropped** images of the fish using the bounding box from Metadata (we had 10% increase in size from the original bbox to prevent truncation of the file). The code is under [Scripts](https://github.com/hdr-bgnn/BGNN_Snakemake/blob/main/Scripts/Crop_image). **Folder: Cropped/** 
+   4. **Segmented** traits using code developed by Maruf and reorganize by Thibault [here](https://github.com/hdr-bgnn/BGNN-trait-segmentation/blob/segment_mini). Folder Segment/
+   5. First version to	Extraction of **morphology** traits, including linear measurements, areas, ratios, and landmarks. This part is done in collaboration between Battelle (Meghan, Paula and I) and Yasin. The code is under [Scripts](https://github.com/hdr-bgnn/BGNN_Snakemake/blob/main/Scripts/Morphology). **Folder Morphology/Presence, Morphology/Landmark, Morphology/Measure, Morphology/Vis_landmarks**
 
 These 4 steps are represented in the following workflow diagram
 
@@ -27,9 +27,9 @@ These 4 steps are represented in the following workflow diagram
 
 3. Scripts for
    - Generating metadata (in particular bounding box, bbox)
-   - cropping the fish using bbox and generating cropped image
-   - traits segmentation
-   - morphology
+   - Cropping the fish using bbox and generating cropped image
+   - Traits segmentation
+   - Morphology
  
 I believe the scripts should live on their respective repository. This part is still a bit comfusing... Need to work on that.
 Yes I agree we are try to do it. WIP
@@ -43,11 +43,15 @@ Yes I agree we are try to do it. WIP
    - Metadata/ : store the output from generate_metadata.py code developed by Drexel team. One file ".json" per image
    - Cropped/ : store the ouput from Crop image. 
    - Segmented/ : store the ouput from Segment trait using code developed by M. Maruf (Virginia Tech)
-   - Morphology/ : in development, current version (1) has been develop by Thibault Tabarin (Battelle)
+   - Morphology/ : in development, current version (1) has been develop by Thibault Tabarin (Battelle), for information about the trait and morphology check [minnowsTraits repo](here https://github.com/hdr-bgnn/minnowTraits)
+         + Presence : presence/absence table
+         + Measure : specific measurement the fish (e.i. head depth, head width, snout to eye distance....)
+         + Landmark : table with specific landmark positions used to determinate the measurement 
+         + Vis_Landmark : image of segmented fish with landmark
 
 # 2- Setup and Requirements
 
-   - To start with OSC system check instructions in Setup_Snakemake_OSC.txt.
+   - To start with OSC system check instructions in Setup_Snakemake_OSC.txt. (not up to date, for question post issues)
    - Todo opy paste the contain of Setup_Snakemake_OSC.txt here and format it nicely... Probably a lot of typo to fix
 
 # 3- Download models
@@ -65,9 +69,7 @@ Yes I agree we are try to do it. WIP
    *Models for generate metadata* : https://drive.google.com/file/d/1QWzmHdF1L_3hbjM85nOjfdHsm-iqQptG
    
 
-# 4- Usage
-   
-   For explanation check instruction in Instruction_Snakemake.txt
+# 4- Usage and test
    
    ```
    snakemake --cores 1 --use-singularity --config list=List/list_lepomis_INHS.csv
@@ -75,7 +77,6 @@ Yes I agree we are try to do it. WIP
 
 # 5- Codes and Containers location
 
-The containers related to this project are located at https://cloud.sylabs.io/library/thibaulttabarin
 Some of the containers are created using github action, some other are created using singularity remote builder. We are currently transitioning all the containers to github action.
 
 there are 3 containers of interest:
@@ -126,15 +127,15 @@ there are 3 containers of interest:
    
    11- source activate snakemake # Again! Same as before
 
-   12- snakemake --cores 4 --use-singularity --config list=List/list_lepomis_INHS.csv # the first time, it may take sometime to download the container and some models.
+   12- snakemake --cores 4 --use-singularity --config list=List/list_lepomis_INHS.csv # the first time, it may take sometime to download the container. In this simple version, snakemake will call Snakefile, all the results will be dump in the directory where you are (containing Snakefile)
    
    13- exit # exit the computing node
    
-   14- ls ~/BGNN_Snakemake # you shloud see folders Images/ Metadata/ Cropped/ Segmented/ populated with multiple fish_file on some sort.
+   14- ls ~/BGNN_Snakemake # you shloud see folders Images/ Metadata/ Cropped/ Segmented/... populated with multiple fish_file on some sort.
 
 ## 2- sbatch and slurm (work in progress)
    
-   To submit a job to OSC I use the script [SLURM_Snake](SLURM_Snake).
+   To submit a job to OSC I use the script [SLURM_Snake](SLURM_Snake), it will call the Snakefile from the same directory.
    
    Usage, connect to the login node
    
