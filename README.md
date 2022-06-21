@@ -12,6 +12,7 @@ The output of each rule is store to specific folder:
    3.	Create **Cropped** images of the fish using the bounding box from Metadata (we had 10% increase in size from the original bbox to prevent truncation of the file). The code is under [Scripts](https://github.com/hdr-bgnn/BGNN_Snakemake/blob/main/Scripts/Crop_image). **Folder: Cropped/** 
    4. **Segmented** traits using code developed by Maruf and reorganize by Thibault [here](https://github.com/hdr-bgnn/BGNN-trait-segmentation/blob/segment_mini). Folder Segment/
    5. First version to	Extraction of **morphology** traits, including linear measurements, areas, ratios, and landmarks. This part is done in collaboration between Battelle (Meghan, Paula and I) and Yasin. The code is under [Scripts](https://github.com/hdr-bgnn/BGNN_Snakemake/blob/main/Scripts/Morphology). **Folder Morphology/Presence, Morphology/Landmark, Morphology/Measure, Morphology/Vis_landmarks**
+For this version the schematic describing the landmarks and measurements are [here](https://github.com/hdr-bgnn/minnowTraits/blob/main/Old_landmark_measure_map/Landmark_Measure.png). This an older version of the labels.
 
 These 4 steps are represented in the following workflow diagram
 
