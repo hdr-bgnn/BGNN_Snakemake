@@ -71,7 +71,7 @@ rule Morphological_analysis:
         vis_landmarks = "Morphology/Vis_landmarks/{image}_landmark_image.png"
    
     singularity:
-        "docker://ghcr.io/hdr-bgnn/bgnn_snakemake/crop_morph:0.0.16"
+        "docker://ghcr.io/hdr-bgnn/morphology-analysis/morphology:0.0.1"
     shell:
         'Morphology_main.py {input.image} {input.metadata} {output.measure} {output.landmark} {output.presence} {output.vis_landmarks}'
 
