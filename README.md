@@ -30,7 +30,7 @@ These 4 steps are represented in the following workflow diagram
    - Generating metadata (in particular bounding box, bbox) [code here](https://github.com/hdr-bgnn/drexel_metadata/blob/Thibault/gen_metadata_mini/scripts/gen_metadata.py)
    - Cropping the fish using bbox and generating cropped image [code here](https://github.com/hdr-bgnn/BGNN_Snakemake/blob/main/Scripts/Crop_image/)
    - Traits segmentation [code here](https://github.com/hdr-bgnn/BGNN-trait-segmentation/blob/main/Segment_mini/scripts/segmentation_main.py)
-   - Morphology [code here](https://github.com/hdr-bgnn/BGNN_Snakemake/blob/main/Scripts/Morphology/)
+   - Morphology [code here](https://github.com/hdr-bgnn/Morphology-analysis/blob/main/Scripts/Morphology/)
  
 I believe the scripts should live on their respective repository. This part is still a bit comfusing... Need to work on that.
 Yes I agree we are try to do it. WIP
@@ -44,7 +44,7 @@ Yes I agree we are try to do it. WIP
    - Metadata/ : store the output from generate_metadata.py code developed by Drexel team. One file ".json" per image
    - Cropped/ : store the ouput from Crop image. 
    - Segmented/ : store the ouput from Segment trait using code developed by M. Maruf (Virginia Tech)
-   - Morphology/ : in development, current version (1) has been develop by Thibault Tabarin (Battelle), for information about the trait and morphology check [minnowsTraits repo](here https://github.com/hdr-bgnn/minnowTraits)
+   - Morphology/ : in development, current version (1) has been develop by Thibault Tabarin (Battelle), for information about the trait and morphology check [minnowsTraits repo](https://github.com/hdr-bgnn/minnowTraits) and [Morphology-analysis repo](https://github.com/hdr-bgnn/Morphology-analysis)
          + Presence : presence/absence table
          + Measure : specific measurement the fish (e.i. head depth, head width, snout to eye distance....)
          + Landmark : table with specific landmark positions used to determinate the measurement 
@@ -98,9 +98,9 @@ there are 4 containers of interest (Crop_image and Morphology function are conta
    docker://ghcr.io/hdr-bgnn/bgnn-trait-segmentation:0.0.4
    Usage : segmentation_main.py {Cropped.png} {Segmented.png}
    ```
-* [Morphology](https://github.com/hdr-bgnn/BGNN_Snakemake/blob/main/Scripts/Morphology) :
+* [Morphology](https://github.com/hdr-bgnn/Morphology-analysis) :
     ```
-    docker://ghcr.io/hdr-bgnn/bgnn_snakemake/crop_morph:0.0.16
+    docker://ghcr.io/hdr-bgnn/morphology-analysis/morphology:latest
     Usage : Morphology_main.py  <Segemented.png> {metadata.json} {measure.json} {landmark.json} {presence.json} {image_lm.png}
     ```
 # 6- Quick start with OSC
@@ -206,3 +206,4 @@ there are 4 containers of interest (Crop_image and Morphology function are conta
    ```
    Keep in mind that `sacct` defaults to showing jobs from the current day. See [sacct docs](https://slurm.schedmd.com/sacct.html#SECTION_DEFAULT-TIME-WINDOW) for options to specify a different time range.
 
+## 3- Rerun only one part of the pipeline (work in progress)
