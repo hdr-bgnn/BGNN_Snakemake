@@ -16,9 +16,9 @@ For this version the schematic describing the landmarks and measurements are [he
 
 These 4 steps are represented in the following workflow diagram
 
-![Workflow overview 1](https://github.com/hdr-bgnn/BGNN_Snakemake/blob/main/Picture_for_Documentation/Workflw_stage_1.png)
+![Workflow overview 1](https://github.com/hdr-bgnn/BGNN_Snakemake/blob/main/Picture_for_Documentation/Workflow_stage_1.png)
 
-![Workflow overview 2](https://github.com/hdr-bgnn/BGNN_Snakemake/blob/main/Picture_for_Documentation/Workflw_stage_2.png)
+![Workflow overview 2](https://github.com/hdr-bgnn/BGNN_Snakemake/blob/main/Picture_for_Documentation/Workflow_stage_2.png)
 
 ## Workflow components
 
