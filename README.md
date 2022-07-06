@@ -9,9 +9,9 @@ The segmentation workflow consists of the following steps each defined by a "rul
 The output of each rule is store to specific folder:
    1. Download the fish **Images** from [Tulane server](http://www.tubri.org/HDR/INHS/) using a simple bash script: Folder: Images/
    2. Extract **Metadata** information using Detectron2 (deep learning segmentation). The 2 important parameters used from the metadata, are the bounding box(bbox) around the fish and scale (pixel/cm from the ruler). Additionally, we save the mask of the fish outline. The code developed by Drexel and the script used can be found [here](https://github.com/hdr-bgnn/drexel_metadata/blob/Thibault/gen_metadata_mini/scripts/gen_metadata.py). **Folder: Metadata/ and Mask/**
-   3.	Create **Cropped** images of the fish using the bounding box from Metadata (we had 10% increase in size from the original bbox to prevent truncation of the file). The code is under [Scripts](https://github.com/hdr-bgnn/BGNN_Snakemake/blob/main/Scripts/Crop_image). **Folder: Cropped/** 
+   3.	Create **Cropped** images of the fish using the bounding box from Metadata (we had 10% increase in size from the original bbox to prevent truncation of the file). The code is under [Crop_image_main.py](https://github.com/hdr-bgnn/Crop_image/blob/main/Crop_image_main.py). **Folder: Cropped/** 
    4. **Segmented** traits using code developed by Maruf and reorganize by Thibault [here](https://github.com/hdr-bgnn/BGNN-trait-segmentation/blob/main/Segment_mini/scripts/segmentation_main.py). Folder Segment/
-   5. First version to	Extraction of **morphology** traits, including linear measurements, areas, ratios, and landmarks. This part is done in collaboration between Battelle (Meghan, Paula and I) and Yasin. The code is under [Scripts](https://github.com/hdr-bgnn/BGNN_Snakemake/blob/main/Scripts/Morphology). **Folder Morphology/Presence, Morphology/Landmark, Morphology/Measure, Morphology/Vis_landmarks**
+   5. First version to	Extraction of **morphology** traits, including linear measurements, areas, ratios, and landmarks. This part is done in collaboration between Battelle (Meghan, Paula and Thibault) and Yasin. The code is under [Morphology_main.py](https://github.com/hdr-bgnn/Morphology-analysis/blob/main/Scripts/Morphology_main.py). **Folder Morphology/Presence, Morphology/Landmark, Morphology/Measure, Morphology/Vis_landmarks**
 For this version the schematic describing the landmarks and measurements are [here](https://github.com/hdr-bgnn/minnowTraits/blob/main/Old_landmark_measure_map/Landmark_Measure.png). This an older version of the labels.
 
 These 4 steps are represented in the following workflow diagram
@@ -28,9 +28,9 @@ These 4 steps are represented in the following workflow diagram
 
 3. Scripts for
    - Generating metadata (in particular bounding box, bbox) [code here](https://github.com/hdr-bgnn/drexel_metadata/blob/Thibault/gen_metadata_mini/scripts/gen_metadata.py)
-   - Cropping the fish using bbox and generating cropped image [code here](https://github.com/hdr-bgnn/BGNN_Snakemake/blob/main/Scripts/Crop_image/)
+   - Cropping the fish using bbox and generating cropped image [code here](https://github.com/hdr-bgnn/Crop_image/blob/main/Crop_image_main.py)
    - Traits segmentation [code here](https://github.com/hdr-bgnn/BGNN-trait-segmentation/blob/main/Segment_mini/scripts/segmentation_main.py)
-   - Morphology [code here](https://github.com/hdr-bgnn/Morphology-analysis/blob/main/Scripts/Morphology/)
+   - Morphology [code here](https://github.com/hdr-bgnn/Morphology-analysis/blob/main/Scripts/Morphology_main.py)
  
 I believe the scripts should live on their respective repository. This part is still a bit comfusing... Need to work on that.
 Yes I agree we are try to do it. WIP
@@ -88,9 +88,9 @@ there are 4 containers of interest (Crop_image and Morphology function are conta
    singularity pull --arch amd64 library://thibaulttabarin/bgnn/metadata_generator:v2
    Usage : gen_metadata.py {image.jpg} {metadata.json} {mask.jpg}
    ```
-* [Crop_image](https://github.com/hdr-bgnn/BGNN_Snakemake/blob/main/Scripts/Crop_image) :
+* [Crop_image](https://github.com/hdr-bgnn/Crop_image/blob/main/Crop_image_main.py) :
     ```
-    docker://ghcr.io/hdr-bgnn/bgnn_snakemake/crop_morph:0.0.16
+    docker pull ghcr.io/hdr-bgnn/crop_image/crop_image:0.0.2
     Usage : Crop_image_main.py {image.jpg} {metadata.json} {Cropped.jpg}
     ```
 * [Segment_trait](https://github.com/hdr-bgnn/BGNN-trait-segmentation/blob/segment_mini):  
