@@ -110,11 +110,14 @@ there are 4 containers of interest (Crop_image and Morphology function are conta
    This is the best way to start.  
    Requirement: have an acount at OSC. If you need one, contact Hilmar Lapp (Hilmar.Lapp@duke.edu) or Steve Chang (chang.136@osu.edu).
    
-   1- ssh <username>@pitzer.osc.edu # you are now on login node... Be gentle with them, they don't like to work too hard!
+   1-  Log onto a login node... Be gentle with them, they don't like to work too hard!
+   ```ssh <username>@pitzer.osc.edu```
+  
+   2- Clone the repository, do it only the first time.
+   ```git clone git@github.com:hdr-bgnn/BGNN_Snakemake.git ```
    
-   2- git clone git@github.com:hdr-bgnn/BGNN_Snakemake.git # only the first time.
-   
-   3- module load miniconda3 # only the first.
+   3- Only the first.
+   ```module load miniconda3``` 
    
    4- conda create -n snakemake -c bioconda -c conda-forge snakemake -y # Create an environment named snakemake 
    
