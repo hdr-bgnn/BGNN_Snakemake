@@ -111,31 +111,52 @@ there are 4 containers of interest (Crop_image and Morphology function are conta
    Requirement: have an acount at OSC. If you need one, contact Hilmar Lapp (Hilmar.Lapp@duke.edu) or Steve Chang (chang.136@osu.edu).
    
    1-  Log onto a login node... Be gentle with them, they don't like to work too hard!
+   
    ```ssh <username>@pitzer.osc.edu```
   
    2- Clone the repository, do it only the first time.
+   
    ```git clone git@github.com:hdr-bgnn/BGNN_Snakemake.git ```
    
    3- Only the first.
+   
    ```module load miniconda3``` 
    
-   4- conda create -n snakemake -c bioconda -c conda-forge snakemake -y # Create an environment named snakemake 
+   4- Create an environment named snakemake  with module snakemake
    
-   5- source activate snakemake # Activate the environment, so now you have access to the package snakemake
+   ```conda create -n snakemake -c bioconda -c conda-forge snakemake -y```
    
-   6- conda info -e # you should see environment named "snakmake" if not check [here](https://www.osc.edu/resources/getting_started/howto/howto_add_python_packages_using_the_conda_package_manager) for more info
+   5- Activate the environment, so now you have access to the package snakemake
    
-   9- sinteractive  -N 1 -n 4  -t 00:10:00  -A <PROJECT_NAME> -J test -p debug squeue -u $USER # your now on a computing node.
+   ```source activate snakemake``` 
    
-   10- module load miniconda3 # Again! yes it is a different node (understand different machine).
+   6- you should see environment named "snakmake" if not check [here](https://www.osc.edu/resources/getting_started/howto/howto_add_python_packages_using_the_conda_package_manager) for more info
    
-   11- source activate snakemake # Again! Same as before
+   ```conda info -e```
+   
+   9- Request an interactive session on a computing node. Replace <PROJECT_NAME> by the appropriete value.
+   
+   ```sinteractive  -N 1 -n 4  -t 00:10:00  -A <PROJECT_NAME> -J test -p debug squeue -u $USER``` 
+   
+   10- Again! yes since you are on different node (computing node that you have requested)
+   
+   ```module load miniconda3``` 
+   
+   11- # Again! Same as before
+   
+   ```source activate snakemake``` 
 
-   12- snakemake --cores 4 --use-singularity --config list=List/list_lepomis_INHS.csv # the first time, it may take sometime to download the container. In this simple version, snakemake will call Snakefile, all the results will be dump in the directory where you are (containing Snakefile)
+   12- Test snakeme. The first time, it may take sometime to download the container. In this simple version, snakemake will call Snakefile, all the results will be dump in the directory where you are (containing Snakefile)
    
-   13- exit # exit the computing node
+   ```snakemake --cores 4 --use-singularity --config list=List/list_lepomis_INHS.csv ``` # 
    
-   14- ls ~/BGNN_Snakemake # you shloud see folders Images/ Metadata/ Cropped/ Segmented/... populated with multiple fish_file on some sort.
+   13- To exit the computing node
+   
+   ```exit```
+   
+   14- To check the result. You shloud see folders Images/ Metadata/ Cropped/ Segmented/... populated with multiple fish_file on some sort.
+   
+    ```ls ~/BGNN_Snakemake```
 
 ## 2- sbatch and slurm (work in progress)
    
