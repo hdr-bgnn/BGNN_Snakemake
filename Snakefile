@@ -7,14 +7,15 @@ LIST = config['list']
 
 print(f"your are using this list {LIST}")
 
-df = pd.read_csv(f'{LIST}')
-split_df = df['original_file_name'].str.split('\\.', expand=True)
-split_df.columns=['original_file_name','2']
-samples_df = df.drop(columns=['original_file_name'])
-df = pd.merge(split_df['original_file_name'],samples_df, how="left", left_index=True, right_index=True)
-samples_df = df.set_index('original_file_name', drop=False)
+# Read images CSV file into a dataframe
+df = pd.read_csv(LIST)
+# Create 'name' column by removing the filename extension from 'original_file_name'
+df['name'] = df['original_file_name'].apply(lambda x : os.path.splitext(x)[0])
+# Create Series to lookup a URL for an image 'name'
+df = df.set_index('name')
+NAME_TO_URL = df['path']
 
-NAMES = list(samples_df['original_file_name'])
+NAMES = list(NAME_TO_URL.index)
 NAMES = [os.path.splitext(name)[0] for name in NAMES]
 IMAGES = expand("Images/{image}.jpg", image=NAMES)
 METADATA = expand("Metadata/{image}.json", image=NAMES)
@@ -28,7 +29,7 @@ rule all:
 
 rule download_image:
     output:'Images/{image}.jpg'
-    params: download_link = lambda wildcards: samples_df.loc[wildcards.image, "path"]
+    params: download_link = lambda wildcards: NAME_TO_URL[wildcards.image]
     shell: 'wget -O {output} {params.download_link}'
 
 rule clean:
